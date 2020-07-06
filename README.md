@@ -78,7 +78,7 @@
 ----
   **User Login**
 ----
-  Login to user account to access Music dashboard (if user already register)
+  Login to user account to access Fancy Todo App
 
 * **URL**
 
