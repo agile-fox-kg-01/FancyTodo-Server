@@ -1,0 +1,25 @@
+{
+  "name": "fancy-todo-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeeS17/FancyTodo-Server.git"
+  },
+  "keywords": [],
+  "author": "Daniel Soerjonoto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DeeS17/FancyTodo-Server/issues"
+  },
+  "homepage": "https://github.com/DeeS17/FancyTodo-Server#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.2.1",
+    "sequelize": "^6.3.0"
+  }
+}
