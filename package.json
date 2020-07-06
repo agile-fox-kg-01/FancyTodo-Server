@@ -1,0 +1,25 @@
+{
+  "name": "fancytodo-server",
+  "version": "1.0.0",
+  "description": "simple fancy todo application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aarsandi/FancyTodo-Server.git"
+  },
+  "keywords": [],
+  "author": "aarsandi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aarsandi/FancyTodo-Server/issues"
+  },
+  "homepage": "https://github.com/aarsandi/FancyTodo-Server#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.2.1",
+    "sequelize": "^6.3.0"
+  }
+}
