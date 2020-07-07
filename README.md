@@ -219,6 +219,28 @@
  
 * **Error Response:**
 
+    * **Code:** 401 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        {
+          "code": "401",
+          "message": "Please login to use this feature!"
+        }
+        ```
+
+    OR
+
+    * **Code:** 401 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        {
+          "code": "401",
+          "message": "User unauthorized"
+        }
+        ```
+
+    OR
+
     * **Code:** 500 INTERNAL SERVER ERROR <br />
         **Content:** 
         ```json
@@ -292,6 +314,28 @@
     ```
  
 * **Error Response:**
+
+    * **Code:** 401 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        {
+          "code": "401",
+          "message": "Please login to use this feature!"
+        }
+        ```
+
+    OR
+
+    * **Code:** 401 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        {
+          "code": "401",
+          "message": "User unauthorized"
+        }
+        ```
+
+    OR
 
     * **Code:** 400 BAD REQUEST <br />
         **Content:** 
@@ -407,6 +451,28 @@
     ```
  
 * **Error Response:**
+
+    * **Code:** 401 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        {
+          "code": "401",
+          "message": "Please login to use this feature!"
+        }
+        ```
+
+    OR
+
+    * **Code:** 401 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        {
+          "code": "401",
+          "message": "User unauthorized"
+        }
+        ```
+
+    OR
 
     * **Code:** 404 NOT FOUND <br />
         **Content:** 
@@ -551,6 +617,92 @@
           "message": "invalid email/password"
         }
         ```
+    OR
+
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+        **Content:** 
+        ```json
+        {
+          "code": "500",
+          "message": "Internal Server Error"
+        }
+        ```
+----
+  **Email To Do**
+----
+  Email To Do Detail to your email
+
+* **URL**
+
+  /todos/email/:id
+
+* **Method:**
+  
+  `POST`
+
+* **Request Headers**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | token | application/x-www-form-urlencoded | true |
+  
+* **URL Params**
+
+    | key | value | required |
+  | :---: | :---: | :---: |
+  | id | <YOUR_ID> | true |
+
+* **Data Params**
+
+    | key | value | required |
+  | :---: | :---: | :---: |
+  | email | <YOUR_EMAIL> | true |
+
+* **Success Response:**
+  
+  
+  * **Code:** 200 OK <br />
+    **Content:** 
+    ```json
+    {
+    "id": "<20200707135709.1.49227BB70D6E28B1@sandbox710b35b55b724cad928833d39ac6013d.mailgun.org>",
+    "message": "Queued. Thank you."
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 401 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        {
+          "code": "401",
+          "message": "Please login to use this feature!"
+        }
+        ```
+
+    OR
+
+    * **Code:** 401 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        {
+          "code": "401",
+          "message": "User unauthorized"
+        }
+        ```
+
+    OR
+    
+    * **Code:** 404 NOT FOUND <br />
+        **Content:** 
+        ```json
+        {
+          "code": "404",
+          "message": "Not Found"
+        }
+        ```
+
     OR
 
     * **Code:** 500 INTERNAL SERVER ERROR <br />

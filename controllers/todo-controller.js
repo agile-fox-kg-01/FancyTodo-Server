@@ -146,8 +146,8 @@ class ToDoController {
                 };
 
                 mailgun.messages().send(data, (error, body) => {
-                    if (error) res.send(error)
-                    else res.send(body)
+                    if (error) next(error)
+                    else res.status(200).json(body)
                 })
             })
             .catch(err => {
