@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model, DATEONLY
+  Model,
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // 1 todo dimiliki 1 user
+      Todo.belongsTo(models.User)
     }
   };
   Todo.init({
@@ -46,9 +47,16 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'Field Due Date wajib diisi'
+          msg: 'Field due date wajib diisi'
+        },
+        isDate: {
+          args: true,
+          msg: 'Field Due Date tidak sesuai format'
         }
       }
+    },
+    UserId : {
+      type : DataTypes.INTEGER
     }
   }, {
     hooks : {
