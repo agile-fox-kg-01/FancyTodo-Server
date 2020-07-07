@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      ToDo.belongsTo(models.User)
     }
   };
   ToDo.init({
@@ -41,15 +42,20 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    due_date: {
-      type: DataTypes.DATE,
+    dueDate: {
+      type: DataTypes.STRING,
       validate: {
+        isDate: {
+          args: true,
+          msg: "Please input due date with this format (yyyy/mm/dd)"
+        },
         notEmpty: {
           args: true,
-          msg: "Due_date cannot be empty!"
+          msg: "Due Date cannot be empty!"
         }
       }
-    }
+    },
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'ToDo',

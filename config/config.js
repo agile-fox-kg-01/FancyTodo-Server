@@ -1,9 +1,9 @@
-{
+module.exports = {
   "development": {
-    "username": "postgres",
-    "password": "postgres",
+    "username": process.env.CONFIG_USERNAME,
+    "password": process.env.CONFIG_PASSWORD,
     "database": "Fancy_ToDo_App",
-    "host": "127.0.0.1",
+    "host": process.env.CONFIG_HOST,
     "dialect": "postgres"
   },
   "test": {
