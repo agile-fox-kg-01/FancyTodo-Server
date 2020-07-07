@@ -1,16 +1,16 @@
+require('dotenv').config()
 const { Task } = require('../models/index')
+const axios = require('axios')
 
 class TodoController {
-    static index(req, res) {
+    static index(req, res, next) {
         Task.findAll({where: {UserId: req.userLogin.id}}).then(data => {
-            res.status(201).json(data)
+            res.status(200).json(data)
         }).catch(err => {
-            res.status(500).json({
-                err: err.message
-            })
+            next(err)
         })
     }
-    static create(req, res) {
+    static create(req, res, next) {
         const task = {
             title: req.body.title,
             description: req.body.description,
@@ -21,32 +21,30 @@ class TodoController {
             res.status(201).json(task)
         }).catch(err => {
             if (err.name === "SequelizeValidationError") {
-                res.status(400).json({
-                    err: "validation errors"
+                next({
+                    name: 'ValidationError',
+                    errors: err.errors[0].message
                 })
             } else {
-                res.status(500).json({
-                    err: err.message
-                })
+                next(err)
             }
         })
     }
-    static read(req, res) {
+    static read(req, res, next) {
         Task.findByPk(req.params.id).then(data => {
             if(data == null) {
-                res.status(404).json({
-                    err : 'error not found' 
+                next({
+                    name: 'NotFound',
+                    errors: 'Task Not Found'
                 })
             } else {
                 res.status(200).json(data)
             }
         }).catch(err => {
-            res.status(500).json({
-                err: err.message
-            })
+            next(err)
         })
     }
-    static update(req,res) {
+    static update(req, res, next) {
         const task = {
             title: req.body.title,
             description: req.body.description,
@@ -54,11 +52,12 @@ class TodoController {
         }
         Task.update(task, {where: {id: req.params.id}}).then(data => {
             if(data == 0) {
-                res.status(404).json({
-                    err : 'error not found'
+                next({
+                    name: 'NotFound',
+                    errors: 'Task Not Found'
                 })
             } else {
-                res.status(200).json({
+                res.status(201).json({
                     title: task.title,
                     description: task.description,
                     due_date: task.due_date
@@ -66,13 +65,12 @@ class TodoController {
             }
         }).catch(err => {
             if (err.name === "SequelizeValidationError") {
-                res.status(400).json({
-                    err: "validation errors"
+                next({
+                    name: 'ValidationError',
+                    errors: err.errors[0].message
                 })
             } else {
-                res.status(500).json({
-                    err: err.message
-                })
+                next(err)
             }
         })
     }
@@ -84,17 +82,28 @@ class TodoController {
         })
         .then(data => {
             if(data == 0) {
-                res.status(404).json({
-                    err : 'error not found'
+                next({
+                    name: 'NotFound',
+                    errors: 'Task Not Found'
                 })
             } else {
                 res.status(200).json(task)
             }
         }).catch(err => {
-            res.status(500).json({
-                err: err.message
-            })
+            next(err)
         })
+    }
+
+    static weather(req, res) {
+        axios({
+            methode: 'GET',
+            url: `http://api.weatherstack.com/current?access_key=${process.env.WEATHER_API_KEY}&query=fetch:ip`
+        })
+        .then(result => {
+            res.status(200).json(result.data)
+        }).catch(err => {
+            next(err)
+        });
     }
 }
 

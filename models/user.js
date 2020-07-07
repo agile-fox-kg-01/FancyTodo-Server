@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: {
           args: true,
-          msg: 'format must be an email'
+          msg: 'Invalid email format'
         }
       }
     },
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'fill your password'
+          msg: 'fill in the password'
         }
       }
     },

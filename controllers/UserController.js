@@ -4,7 +4,7 @@ const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
 
 class UserController {
-    static login(req, res) {
+    static login(req, res, next) {
         const inputPassword = req.body.password
         User.findOne({
             where: {
@@ -13,27 +13,29 @@ class UserController {
         }).then(user => {
             const databasePassword = user ? user.password : ''
             if(!user) {
-                throw 'invalid username/password'
+                next({
+                    name: 'ValidationError',
+                    errors: 'invalid username/password'
+                })
             }else if (!comparePassword(inputPassword, databasePassword)) {
-                throw 'invalid username/password'
+                next({
+                    name: 'ValidationError',
+                    errors: 'invalid username/password'
+                })
             } else {
                 const payload = {
                     email: user.email
                 }
                 const token = signToken(payload)
-
                 res.status(200).json({
                     token
                 })
             }
         }).catch(err => {
-            console.log(err)
-            res.status(500).json({
-                err
-            })
+            next(err)
         })
     }
-    static async register(req, res) {
+    static async register(req, res, next) {
         const newUser = {
             email: req.body.email,
             password: req.body.password
@@ -44,9 +46,14 @@ class UserController {
                 user
             })
         } catch (err) {
-            res.status(500).json({
-                err
-            })
+            if (err.name === "SequelizeValidationError") {
+                next({
+                    name: 'ValidationError',
+                    errors: err.errors[0].message
+                })
+            } else {
+                next(err)
+            }
         }
     }
 }
