@@ -2,51 +2,48 @@ const { Task } = require('../models/index')
 
 class TodoController {
     static index(req, res) {
-        Task.findAll().then(data => {
+        Task.findAll({where: {UserId: req.userLogin.id}}).then(data => {
             res.status(201).json(data)
         }).catch(err => {
-            res.status(500).json(
-                {err: err.message}
-            )
+            res.status(500).json({
+                err: err.message
+            })
         })
     }
     static create(req, res) {
         const task = {
             title: req.body.title,
             description: req.body.description,
-            due_date: req.body.due_date
+            due_date: req.body.due_date,
+            UserId: req.userLogin.id
         }
         Task.create(task).then(data => {
-            res.status(201).json({
-                title: data.title,
-                description: data.description,
-                due_date: data.due_date
-            })
+            res.status(201).json(task)
         }).catch(err => {
             if (err.name === "SequelizeValidationError") {
-                res.status(400).json(
-                    {err: "validation errors"}
-                )
+                res.status(400).json({
+                    err: "validation errors"
+                })
             } else {
-                res.status(500).json(
-                    {err: err.message}
-                )
+                res.status(500).json({
+                    err: err.message
+                })
             }
         })
     }
-    static find(req, res) {
+    static read(req, res) {
         Task.findByPk(req.params.id).then(data => {
             if(data == null) {
-                res.status(404).json(
-                    { err : 'error not found' }
-                )
+                res.status(404).json({
+                    err : 'error not found' 
+                })
             } else {
                 res.status(200).json(data)
             }
         }).catch(err => {
-            res.status(500).json(
-                {err: err.message}
-            )
+            res.status(500).json({
+                err: err.message
+            })
         })
     }
     static update(req,res) {
@@ -57,9 +54,9 @@ class TodoController {
         }
         Task.update(task, {where: {id: req.params.id}}).then(data => {
             if(data == 0) {
-                res.status(404).json(
-                    { err : 'error not found' }
-                )
+                res.status(404).json({
+                    err : 'error not found'
+                })
             } else {
                 res.status(200).json({
                     title: task.title,
@@ -69,13 +66,13 @@ class TodoController {
             }
         }).catch(err => {
             if (err.name === "SequelizeValidationError") {
-                res.status(400).json(
-                    {err: "validation errors"}
-                )
+                res.status(400).json({
+                    err: "validation errors"
+                })
             } else {
-                res.status(500).json(
-                    {err: err.message}
-                )
+                res.status(500).json({
+                    err: err.message
+                })
             }
         })
     }
@@ -87,16 +84,16 @@ class TodoController {
         })
         .then(data => {
             if(data == 0) {
-                res.status(404).json(
-                    { err : 'error not found' }
-                )
+                res.status(404).json({
+                    err : 'error not found'
+                })
             } else {
                 res.status(200).json(task)
             }
         }).catch(err => {
-            res.status(500).json(
-                {err: err.message}
-            )
+            res.status(500).json({
+                err: err.message
+            })
         })
     }
 }

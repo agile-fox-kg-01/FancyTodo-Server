@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Task)
     }
   };
   User.init({
@@ -34,11 +35,13 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'fill your password'
         }
       }
-    }
+    },
+    role: DataTypes.STRING
   }, {
     hooks: {
       beforeCreate(user) {
         user.password = hashPassword(user.password)
+        user.role = 'normaluser'
       }
     },
     sequelize,

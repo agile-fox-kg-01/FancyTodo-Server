@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Task.belongsTo(models.User)
     }
   };
   Task.init({
@@ -30,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'validation error'
         }
       }
-    }, 
+    },
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Task',
