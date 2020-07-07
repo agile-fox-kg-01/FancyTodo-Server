@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'Field Description wajib diisi'
+          msg: 'description cannot be empty'
         }
       }
     },
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'Field Status wajib diisi'
+          msg: 'status cannot be empty'
         }
       }
     },
@@ -47,11 +47,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'Field due date wajib diisi'
+          msg: 'due date cannot be empty'
         },
         isDate: {
           args: true,
-          msg: 'Field Due Date tidak sesuai format'
+          msg: 'invalid due date format'
         }
       }
     },

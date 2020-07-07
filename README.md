@@ -7,13 +7,13 @@
 ## API Documentation
 
 ----
-  **User Register**
+  **Create Todo**
 ----
-  New user registration in Music app
+  Make new todo 
 
 * **URL**
 
-  /users/register
+  /todos/
 
 * **Method:**
   
@@ -23,7 +23,7 @@
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | Content-Type | application/x-www-form-urlencoded | true |
+  | token | <jsonwebtoken> | true |
   
 * **URL Params**
 
@@ -33,9 +33,10 @@
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | name | <YOUR_NAME> | true |
-  | email | <YOUR_EMAIL> | true |
-  | password | <YOUR_PASSWORD_HERE> | true |
+  | title | <WRITE_TITLE_HERE> | true |
+  | description | <WRITE_DESCRIPTION_HERE> | true |
+  | status | <WRITE_STATUS_HERE> | true |
+  | due_date | <WRITE_DUEDATE_HERE> | true |
 
 * **Success Response:**
   
@@ -45,8 +46,11 @@
     ```json
     {
     "id": 1,
-    "name": "Huey McMeow",
-    "email": "hueyguey@mail.com"
+    "title": "Tugas Pertama",
+    "description": "Mengerjakan Dokumnetasi API",
+    "status": "On Progres",
+    "due_date": "2020-07-08T17:00:00.000Z",
+    "UserId": 1,
     }
     ```
  
@@ -55,43 +59,25 @@
     * **Code:** 400 BAD REQUEST <br />
         **Content:** 
         ```json
-        { "error" : "name can't be empty" }
+        { "error" : "description cannot be empty" }
         ```
 
         OR
 
         ```json
-        { "error" : "email already exists" }
+        { "error" : "status cannot be empty" }
         ```
 
         OR
 
         ```json
-        { "error" : "email can't be empty" }
+        { "error" : "due date cannot be empty" }
         ```
 
         OR
 
         ```json
-        { "error" : "invalid email format" }
-        ```
-
-        OR
-
-        ```json
-        { "error" : "password can't be empty" }
-        ```
-
-        OR
-
-        ```json
-        { "error" : "password must be at least 8 character long" }
-        ```
-
-        OR
- 
-        ```json
-        { "error" : "password can't contain any whitespace character" }
+        { "error" : "invalid due date format" }
         ```
 
     OR
@@ -101,10 +87,13 @@
         ```json
         { "error" : "internal server error" }
         ```
+
+<!-- iklas -->
+
 ----
   **User Register**
 ----
-  New user registration in Music app
+  New user registration in FancyTodo App
 
 * **URL**
 
@@ -116,9 +105,7 @@
 
 * **Request Headers**
 
-  | key | value | required |
-  | :---: | :---: | :---: |
-  | Content-Type | application/x-www-form-urlencoded | true |
+   none
   
 * **URL Params**
 
@@ -139,9 +126,12 @@
     **Content:** 
     ```json
     {
-    "id": 1,
-    "name": "Huey McMeow",
-    "email": "hueyguey@mail.com"
+    "id": 3,
+    "email": "ichlasul1099@gmail.com",
+    "password": "$2a$05$.UDJpZnfrmrP.xQTTXmJ2.BD1sk5Uat30oHUO3x56.f5cBEej/0Gq",
+    "updatedAt": "2020-07-07T20:17:51.889Z",
+    "createdAt": "2020-07-07T20:17:51.889Z",
+    "role": "Not Admin"
     }
     ```
  
@@ -150,19 +140,13 @@
     * **Code:** 400 BAD REQUEST <br />
         **Content:** 
         ```json
-        { "error" : "name can't be empty" }
-        ```
-
-        OR
-
-        ```json
-        { "error" : "email already exists" }
-        ```
-
-        OR
-
-        ```json
         { "error" : "email can't be empty" }
+        ```
+
+        OR
+
+        ```json
+        { "error" : "email must unique" }
         ```
 
         OR
@@ -200,7 +184,7 @@
 ----
   **User Login**
 ----
-  Login to user account to access Music dashboard (if user already register)
+  Login to user account to access Todo dashboard (if user already register)
 
 * **URL**
 
@@ -212,9 +196,7 @@
 
 * **Request Headers**
 
-  | key | value | required |
-  | :---: | :---: | :---: |
-  | Content-Type | application/x-www-form-urlencoded | true |
+   none
   
 * **URL Params**
 
