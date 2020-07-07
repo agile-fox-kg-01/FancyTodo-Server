@@ -1,82 +1,133 @@
 const { Todo } = require('../models/index')
 
 class TodosController {
-    static post(req, res) {
+    static create(req, res, next) {
 
         // console.log(req.body)
-
-        if(req.body.title == "") req.body.title = null;
-        if(req.body.description == "") req.body.description = null;
-        if(req.body.status == "") req.body.status = null;
-        if(req.body.due_date == "") req.body.due_date = null;
+        // console.log(req.userLogin)
 
         const newTodo = {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            due_date: new Date(req.body.due_date)
+            due_date: new Date(req.body.due_date),
+            UserId: req.userLogin.id
         };
 
         // console.log(newTodo)
 
         Todo.create(newTodo)
-            .then(todo => {
-                res.status(201).json(todo)
+            .then(todo => { //last checkpoint
+                res.status(201).json({
+                    title: todo.title,
+                    description: todo.description,
+                    status: todo.status,
+                    'due date': todo.due_date,
+                    UserId: todo.UserId
+                })
             })
             .catch(err => {
+
+                // console.log(err)
+
                 if (err.name == 'SequelizeValidationError') {
                     err = err.errors.map(error => error.message)
-
-                    res.status(400).json(err);
+                    next({
+                        name: `BadRequest`,
+                        errors: {message: err}
+                    })
                 } else {
                     // console.log(err.message)
-                    res.status(500).json(err);
+                    next(err);
                 }
             })
     }
 
-    static listAll(req, res) {
-        Todo.findAll()
+    static listAll(req, res, next) {
+
+        // console.log(req.userLogin)
+
+        Todo.findAll({
+            where: {
+                UserId: req.userLogin.id
+            }
+        })
             .then(todos => {
-                res.status(200).json(todos)
+
+                todos = todos.map(todo => todo.dataValues)
+                    .map(todo => {
+
+                        let tmpObj = {};
+
+                        tmpObj.id = todo.id;
+                        tmpObj.title = todo.title;
+                        tmpObj.description = todo.description;
+                        tmpObj.status = todo.status;
+                        tmpObj.due_date = todo.due_date;
+                        tmpObj.UserId = todo.UserId;
+
+                        // console.log(todo)
+
+                        return tmpObj
+                    })
+
+                // console.log(todos)
+
+                res.status(200).json(todos);
             })
             .catch(err => {
-                res.status(500).json(err);
+                next(err);
             })
     }
 
-    static edit(req, res) {
+    static edit(req, res, next) {
 
-        if(req.body.title == "") req.body.title = null;
-        if(req.body.description == "") req.body.description = null;
-        if(req.body.status == "") req.body.status = null;
-        if(req.body.due_date == "") req.body.due_date = null;
+        // console.log(req.body)
 
         const updateTodo = {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            due_date: new Date(req.body.due_date)
+            due_date: new Date(req.body.due_date),
+            UserId: req.userLogin.id
         };
 
         Todo.update(updateTodo, { where: { id: req.params.id }, returning: true })
             .then(todo => {
+
                 // console.log(todo)
 
-                res.status(200).json(todo[1][0])
+                let tmpObj = {};
+
+                tmpObj.id = todo[1][0].id;
+                tmpObj.title = todo[1][0].title;
+                tmpObj.description = todo[1][0].description;
+                tmpObj.status = todo[1][0].status;
+                tmpObj.due_date = todo[1][0].due_date;
+                tmpObj.UserId = todo[1][0].UserId;
+
+                res.status(200).json(tmpObj)
 
                 // return Todo.findByPk(req.params.id)
             })
             .catch(err => {
-                res.status(500).json(err);
+                
+                // console.log(err);
+
+                if (err.name == 'SequelizeValidationError') {
+                    err = err.errors.map(error => error.message)
+                    next({
+                        name: `BadRequest`,
+                        errors: {message: err}
+                    })
+                } else {
+                    // console.log(err.message)
+                    next(err);
+                }
             })
     }
 
-    // .then(todo=> {
-    //     res.status(200).json(todo)
-    // })
-
-    static delete(req, res) {
+    static delete(req, res, next) {
         Todo.destroy({ where: { id: req.params.id } })
             .then(deleted => {
                 // console.log(deleted)
@@ -85,8 +136,7 @@ class TodosController {
             })
             .catch(err => {
                 // console.log(err.message);
-
-                res.status(500).json(err);
+                next(err);
             })
     }
 }

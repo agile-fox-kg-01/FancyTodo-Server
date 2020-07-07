@@ -9,5 +9,8 @@ const UsersController = require('../controllers/usersController');
 router.post('/register', UsersController.register);
 router.post('/login', UsersController.login);
 
+const ghibli = require('./ghibli-router')
+router.use('/ghibli', ghibli)
+
 
 module.exports = router;

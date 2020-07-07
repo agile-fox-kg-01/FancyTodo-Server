@@ -1,11 +1,11 @@
 const { User } = require('../models/index')
 const { comparePassword } = require('../helper/bcrypt');
-const  signToken = require('../helper/jwt')
+const { signToken } = require('../helper/jwt')
 
 class UsersController {
-    static async login (req, res) {
-        try{
-            
+    static async login(req, res, next) {
+        try {
+
             // console.log(req.body) //tracker
 
             const user = await User.findOne({
@@ -16,28 +16,35 @@ class UsersController {
 
             // console.log(user) //tracker
 
-            if(!user) throw `Invalid username/password`;
-            else if(!comparePassword(req.body.password, user.password)) throw `Invalid username/password`;
-            else {
-                
+            if (!user) {
+                next({
+                    name: `BadRequest`,
+                    errors: { message: `Invalid username/password` }
+                })
+            } else if (!comparePassword(req.body.password, user.password)) {
+                next({
+                    name: `BadRequest`,
+                    errors: { message: `Invalid username/password` }
+                })
+            } else {
+
                 // console.log(`hello`)
-                
-                const payload = {email: user.email};
+
+                const payload = { email: user.email };
                 const token = signToken(payload);
 
-                res.status(200).json({accessToken: token});
+                res.status(200).json({ accessToken: token });
+                
             }
-
-
         } catch (err) {
-            res.status(500).json(err)
+            next(err);
         }
-        
-            
+
+
     }
 
-    static async register(req, res) {
-        if(req.body.password == '') req.body.password = null;
+    static async register(req, res, next) {
+        if (req.body.password == '') req.body.password = null;
 
         const newUser = {
             email: req.body.email,
@@ -53,9 +60,9 @@ class UsersController {
 
             // console.log(err) //tracker
 
-            err = err.errors.map(error => error.message)
+            // err = err.errors.map(error => error.message)
 
-            res.status(500).json({error: err});
+            next(err);
         }
     }
 }
