@@ -1,5 +1,6 @@
 const { ToDo } = require('../models/index.js');
 const axios = require('axios')
+const Mailgun = require('mailgun-js')
 
 class ToDoController {
     static async createToDo(req, res, next) {
@@ -11,7 +12,7 @@ class ToDoController {
 
         try {
 
-            //Bored API
+            //Bored API feature => Generate Random Activity for Title
             if (req.body.title === "bored") {
                 await axios.get("http://www.boredapi.com/api/activity/")
                     .then(result => {
@@ -110,6 +111,44 @@ class ToDoController {
             })
             .then(result => {
                 res.status(200).json(obj)
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
+    static emailToDo(req, res, next) {
+        let todoId = Number(req.params.id)
+        let email = req.body.email
+
+        ToDo.findByPk(todoId)
+            .then(result => {
+
+                let todoData = {
+                    title: result.dataValues.title,
+                    description: result.dataValues.description,
+                    status: result.dataValues.status,
+                    dueDate: result.dataValues.dueDate,
+                }
+
+                todoData = JSON.stringify(todoData, null, 2)
+                todoData += `\n Thank you for using our application :)`
+
+                let API_KEY = process.env.MAILGUN_API_KEY;
+                let DOMAIN = process.env.MAILGUN_DOMAIN;
+
+                let mailgun = new Mailgun({ apiKey: API_KEY, domain: DOMAIN });
+                const data = {
+                    from: 'mailgun@sandbox710b35b55b724cad928833d39ac6013d.mailgun.org',
+                    to: email,
+                    subject: `To Do Data Detail: ${result.dataValues.title}`,
+                    text: todoData
+                };
+
+                mailgun.messages().send(data, (error, body) => {
+                    if (error) res.send(error)
+                    else res.send(body)
+                })
             })
             .catch(err => {
                 next(err)

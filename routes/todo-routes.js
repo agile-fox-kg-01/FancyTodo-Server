@@ -9,5 +9,6 @@ router.post('/', authentication, ToDoController.createToDo)
 router.get('/:id', authentication, authorization, ToDoController.readToDoById)
 router.put('/:id', authentication, authorization, ToDoController.updateToDo)
 router.delete('/:id', authentication, authorization, ToDoController.deleteToDo)
+router.post('/email/:id', authentication, authorization, ToDoController.emailToDo)
 
 module.exports = router;
