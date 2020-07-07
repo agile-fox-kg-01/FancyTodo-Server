@@ -1,14 +1,19 @@
+require('dotenv').config()
+
 const express = require('express');
-const index = require('./routes/index.js');
+const router = require('./routes/index.js');
+
+const {errorHandler} = require('./middlewares/errorHandler.js');
 
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
-app.use('/', index);
+app.use('/', router);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`Application is running at PORT http://localhost:${PORT}`);

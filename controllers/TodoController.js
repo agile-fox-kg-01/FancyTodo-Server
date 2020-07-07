@@ -1,7 +1,7 @@
 const { Todo } = require('../models/index.js');
 
 class TodoController {
-    static async postTodoAddHandler(req, res) {
+    static async postTodoAddHandler(req, res, next) {
         const objTodo = {
             title: req.body.title,
             description: req.body.description,
@@ -16,17 +16,11 @@ class TodoController {
             res.status(201).json({newTodo});
 
         } catch(err) {
-            if(err.name === 'SequelizeValidationError') {
-                err = err.errors.map(error => error.message);
-
-                res.status(400).json(err);
-            } else {
-                res.status(500).json({error: 'Internal server error'});
-            }
+            next(err);
         }
     }
 
-    static async getTodoRootHandler(req, res) {
+    static async getTodoRootHandler(req, res, next) {
         const userId = req.userLogin.id;
         try {
             const allTodo = await Todo.findAll({
@@ -38,19 +32,21 @@ class TodoController {
             res.status(200).json(allTodo);
 
         } catch(err) {
-            res.status(500).json({error: 'Internal server error'});
+            next(err);
         }
     }
 
 
-    static async getTodoUpdateHandler(req, res) {
+    static async getTodoUpdateHandler(req, res, next) {
         const paramId = Number(req.params.id);
 
         try {
             const todo = await Todo.findByPk(paramId);
+            console.log(todo);
+            
             res.status(200).json(todo);
         } catch(err) {
-            res.status(404).json({error: 'Not found'});
+            next(err);
         }
     }
 
@@ -75,16 +71,13 @@ class TodoController {
                 const updatedData = result[0];
                 res.status(200).json(updatedData);
             } else {
-                res.status(404).json({error: 'Not found'});
+                next({
+                    name: '404 Not Found',
+                    errors: [{message: 'Not Found'}]
+                });
             }
         } catch(err) {
-            if(err.name === 'SequelizeValidationError') {
-                err = err.errors.map(error => error.message);
-
-                res.status(400).json(err);
-            } else {
-                res.status(500).json({error: 'Internal server error'});
-            }
+            next(err);
         }
     }
 
@@ -102,10 +95,13 @@ class TodoController {
             if(todo === 1) {
                 res.status(200).json(todoData);
             } else {
-                res.status(404).json({error: 'Not found'});
+                next({
+                    name: '404 Not Found',
+                    errors: [{message: 'Not Found'}]
+                });
             }
         } catch(err) {
-            res.status(500).json({error: 'Internal server error'});
+            next(err);
         }
     }
 }

@@ -1,10 +1,9 @@
 const { User } = require('../models/index.js');
-
 const {comparePassword} = require('../helpers/bcrypt.js');
 const {signToken} = require('../helpers/jwt.js');
 
 class UserController {
-    static async postUserLoginHandler(req, res) {
+    static async postUserLoginHandler(req, res, next) {
         const email = req.body.email;
         const password = req.body.password;
 
@@ -32,15 +31,11 @@ class UserController {
             }
 
         } catch(err) {
-            if(err.name === 'SequelizeValidationError') {
-                err = err.errors.map(error => error.message);
-
-                res.status(400).json(err);
-            }
+            next(err);
         }
     }
 
-    static async postUserRegisterHandler(req, res) {
+    static async postUserRegisterHandler(req, res, next) {
         const newUser = {
             email: req.body.email,
             password: req.body.password,
@@ -52,7 +47,7 @@ class UserController {
             
             res.status(201).json({user});
         } catch(err) {
-            res.status(400).json({err});
+            next(err);
         }
 
     }
