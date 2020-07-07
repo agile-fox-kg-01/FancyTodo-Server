@@ -242,7 +242,7 @@
         "title": "Belajar",
         "description": "Belajar ngoding",
         "status": "On Progess",
-        "due_date": 2020/7/9
+        "due_date": 2019-12-31 17:00:00.000 +00:00
     }
     ```
 
@@ -353,4 +353,158 @@
         **Content:** 
         ```json
         { "error" : "Internal server error" }
+        ```
+----
+  **User Register**
+----
+  Register a new User to use application feature
+
+* **URL**
+
+  /user/register
+
+* **Method:**
+  
+  `POST`
+
+* **Request Headers**
+
+  none
+  
+* **URL Params**
+
+  none
+
+* **Data Params**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | email | <YOUR_EMAIL> | true |
+  | password | <YOUR_PASSWORD> | true |
+
+* **Success Response:**
+  
+  
+  * **Code:** 201 CREATED <br />
+    **Content:** 
+    ```json
+    {
+    "id": 1,
+    "email": "test@mail.com",
+    "password": "$2a$05$d3aV7sATu.GowtpxqG6HoOMp3pTI53JVsw/CHhIiZefwtYlOl9JMm"
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 400 BAD REQUEST <br />
+        **Content:** 
+        ```json
+        {
+          "code": "400",
+          "message": [
+              "Please fill the email field"
+          ]
+        }
+        ```
+
+        OR
+
+        ```json
+        {
+          "code": "400",
+          "message": [
+              "Use email format"
+          ]
+        }
+        ```
+
+        ```json
+        {
+          "code": "400",
+          "message": [
+              "Email already in use"
+          ]
+        }
+        ```
+
+        OR
+
+        ```json
+        {
+          "code": "400",
+          "message": [
+              "Please fill the password field"
+          ]
+        }
+        ```
+
+    OR
+
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+        **Content:** 
+        ```json
+        {
+          "code": "500",
+          "message": "Internal Server Error"
+        }
+        ```
+----
+  **User Login**
+----
+  Login to access application feature
+
+* **URL**
+
+  /user/login
+
+* **Method:**
+  
+  `POST`
+
+* **Request Headers**
+
+  none
+  
+* **URL Params**
+
+  none
+
+* **Data Params**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | email | <YOUR_EMAIL> | true |
+  | password | <YOUR_PASSWORD> | true |
+
+* **Success Response:**
+  
+  
+  * **Code:** 200 OK <br />
+    **Content:** 
+    ```json
+    {
+    "token": ""
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 400 BAD REQUEST <br />
+        **Content:** 
+        ```json
+        {
+          "code": "400",
+          "message": "invalid email/password"
+        }
+        ```
+    OR
+
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+        **Content:** 
+        ```json
+        {
+          "code": "500",
+          "message": "Internal Server Error"
+        }
         ```
