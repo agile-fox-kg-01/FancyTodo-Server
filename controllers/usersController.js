@@ -60,9 +60,16 @@ class UsersController {
 
             // console.log(err) //tracker
 
-            // err = err.errors.map(error => error.message)
-
-            next(err);
+            if (err.name == 'SequelizeValidationError') {
+                err = err.errors.map(error => error.message)
+                next({
+                    name: `BadRequest`,
+                    errors: {message: err}
+                })
+            } else {
+                // console.log(err.message)
+                next(err);
+            }
         }
     }
 }
