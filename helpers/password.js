@@ -11,6 +11,7 @@ function comparePassword(inputPassword, databasePassword) {
   return bcrypt.compareSync(inputPassword, databasePassword);
 }
 
+
 module.exports = {
   hashPassword,
   comparePassword

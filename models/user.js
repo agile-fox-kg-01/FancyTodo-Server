@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const { hashPassword } = require('../helpers/password.js')
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,15 +13,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.TodoList)
     }
   };
   User.init({
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.NUMBER,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    password: DataTypes.STRING,
     date_of_birth: DataTypes.DATE
   }, {
+    hooks: {
+      beforeCreate(user) {
+        user.password = hashPassword(user.password)
+      }
+    },
     sequelize,
     modelName: 'User',
   });

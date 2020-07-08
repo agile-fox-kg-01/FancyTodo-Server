@@ -7,9 +7,114 @@ Deploy Here:
 ## API Documentation
 
 ----
-
-  **User Create New Todo**
+**User Register**
 ---
+  
+  * **URL**
+   
+    /users/register
+
+  * **Method**
+
+    `POST`
+
+  * **Request Headers**
+
+    | key | value | required |
+    | :--- | :---: | :---:|
+    | Content-Type | application/x-www-form-urlencoded | true |
+
+  * **URL Params**
+
+    none
+
+  * **Data Params**
+    
+    | key | value | required |
+    | :--: | :--: | :--: |
+    | first_name | "Nurfiah"| true |
+    | last_name | "Idris" | true |
+    | email | "nurfiahidris098gmail.com"| true |
+    | password | "nurfiah12345" |true |
+    | date_of_birth | "09 July 1992" | true |
+
+  * **Success Response**
+
+
+    * **Code:** 201 CREATED <br />
+    **Content:**
+    ```json
+      {
+      "id": 9,
+      "first_name": "Nurfiah",
+      "last_name": "Idris",
+      "email": "nurfiahidris098@gmail.com",
+      "password": "$2a$10$OYGYolF/2v7UT9xoSiRXyOWtHexv9d.Jk9xrIzfhmj56xDqq0Xjmu",
+      "date_of_birth": "1992-07-08T16:00:00.000Z",
+      "updatedAt": "2020-07-06T23:29:58.677Z",
+      "createdAt": "2020-07-06T23:29:58.677Z"
+      }
+      ```
+  * **Errors Response**
+
+    * **Code:** 400 BAD REQUEST <br />
+      **Content**
+      ```json
+      {"error": "email must be unique"}
+      ```
+
+**User Login**
+---
+  
+  * **URL**
+   
+    /users/login
+
+  * **Method**
+
+    `POST`
+
+  * **Request Headers**
+
+    | key | value | required |
+    | :--- | :---: | :---:|
+    | Content-Type | application/x-www-form-urlencoded | true |
+
+  * **URL Params**
+
+    none
+
+  * **Data Params**
+    
+    | key | value | required |
+    | :--: | :--: | :--: |
+    | email | "nurfiahidris098gmail.com"| true |
+    | password | "nurfiah12345" |true |
+
+  * **Success Response**
+
+
+    * **Code:** 200 OK <br />
+    **Content:**
+    ```json
+      {
+       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51cmZpYWhpZHJpczA5OEBnbWFpbC5jb20iLCJpYXQiOjE1OTQwNzg5NjV9.Q8JSD8HhZqRRjPFahSnqDYfjUIHvjMbaSWICxEk_Hv4"
+      }
+      ```
+  * **Errors Response**
+
+    * **Code:** 400 BAD REQUEST <br />
+      **Content**
+      ```json
+      {
+        "errors": "invalid username/password"
+      }
+      ```
+
+
+**User Create New Todo**
+---
+
 * **URL**
 
   /todos
@@ -32,10 +137,10 @@ Deploy Here:
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | title | <YOUR_TODO_TITLE> | true |   
-  | description | <YOUR_TODO_DESCRIPTION> | true |   
-  | status | <YOUR_TODO_STATUS> | true |   
-  | due_date | <YOUR_TODO_DUE_DATE> | true |   
+  | title | "Generate Register and Login Route" | true |   
+  | description | "Harus diselesaikan hari ini juga sebelum besok nambah tugas lagi yah",| true |   
+  | status | true | true |   
+  | due_date | 12-07-2021 | true |   
 
 * **Success Response**
 
@@ -58,25 +163,25 @@ Deploy Here:
   * **Code:** 400 BAD REQUEST <br />
     **Content**
     ```json
-    {"error": "Title field shouldn't be empty"}
+    {"errors":[ "Title field shouldn't be empty" ]}
     ```
 
     OR
 
     ```json
-    {"error": "Description field shouldn't be empty"}
+    {"errors":[ "Description field shouldn't be empty" ]}
     ```
 
     OR 
 
     ```json
-    {"error": "Status field shouldn't be empty"}
+    {"errors": ["Status field shouldn't be empty"]}
     ```
 
     OR
 
     ```json
-    {"error": "Due_date field shouldn't be empty"}
+    {"errors": ["Due_date field shouldn't be empty"]}
     ```
     
   OR
@@ -114,7 +219,7 @@ Deploy Here:
 
 * **Success Response**
 
-  * **Code:** 200 SUCCESS REQUEST <br />
+  * **Code:** 200 OK <br />
     **Content:**
     ```json
     {
@@ -166,7 +271,7 @@ Deploy Here:
 
 * **Success Response**
 
-  * **Code:** 200 SUCCESS REQUEST <br />
+  * **Code:** 200 OK <br />
     **Content:**
     ```json
     {
@@ -185,7 +290,7 @@ Deploy Here:
   * **Code:** 404 NOT FOUND <br />
     **Content**
     ```json
-    {"error": "NOT FOUND"}
+    {"error": "not found"}
     ```
 
 
@@ -216,14 +321,14 @@ Deploy Here:
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | title | <YOUR_TODO_TITLE> | true |   
-  | description | <YOUR_TODO_DESCRIPTION> | true |   
-  | status | <YOUR_TODO_STATUS> | true |   
-  | due_date | <YOUR_TODO_DUE_DATE> | true |   
+  | title | "Generate Register and Login Route", | true |   
+  | description | "Harus diselesaikan hari ini juga sebelum besok nambah tugas lagi yah" | true |   
+  | status | true | true |   
+  | due_date | 12-07-2021| true |   
 
 * **Success Response**
 
-  * **Code:** 200 SUCCESS REQUEST <br />
+  * **Code:** 200 OK <br />
     **Content:**
     ```json
     {
@@ -268,7 +373,7 @@ Deploy Here:
   * **Code:** 404 NOT FOUND <br />
     **Content**
     ```json
-    {"error": "NOT FOUND"}
+    {"error": "not found"}
     ```
 
     
@@ -310,7 +415,7 @@ Deploy Here:
 
 * **Success Response**
 
-  * **Code:** 200 SUCCESS REQUEST <br />
+  * **Code:** 200 OK <br />
     **Content:**
     ```json
     {
@@ -329,7 +434,7 @@ Deploy Here:
   * **Code:** 404 NOT FOUND <br />
     **Content**
     ```json
-    {"error": "NOT FOUND"}
+    {"error": "not found"}
     ```
 
     

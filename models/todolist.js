@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      TodoList.belongsTo(models.User)
     }
   };
   TodoList.init({
@@ -49,6 +50,9 @@ module.exports = (sequelize, DataTypes) => {
           msg: `Due_date field shouldn't be empty`
         }
       }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
     }
   }, {
     sequelize,

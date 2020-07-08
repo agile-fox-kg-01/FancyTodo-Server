@@ -1,69 +1,61 @@
 const { TodoList } = require('../models/index')
+const { due_dateFormat } = require('../helpers/due_date.js')
 
 class TodosController {
 
-  static create(req, res) {
+  static async create(req, res) {
 
-    TodoList
-      .create({
+    try {
+      const newTodo = await TodoList.create({
         title: req.body.title,
         description: req.body.description,
         status: req.body.status,
-        due_date: req.body.due_date
+        due_date: req.body.due_date,
+        UserId: userLogin.id
       })
-      .then(newTodo => {
-        res.status(201).json({
-          id: newTodo.id,
-          title: newTodo.title,
-          description: newTodo.description,
-          status: newTodo.status,
-          due_date: newTodo.due_date,
-          createdAt: newTodo.createdAt,
-          updatedAt: newTodo.updatedAt
-        })
-      })
-      .catch(err => {
-        if (err.name === 'SequelizeValidationError') {
-          err = err.errors.map(error => error.message)
-          res.status(400).json(err)
-        } else {
-          res.status(500).json(err)
+      res.status(201).json(newTodo)
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  static async showAllTodos(req, res, next) {
+
+    try {
+      const todoList = await TodoList.findAll({
+        where: {
+          UserId: userLogin.id
         }
       })
-  }
-
-  static showAllTodos(req, res) {
-    TodoList
-      .findAll({})
-      .then(todos => {
-        res.status(200).json(todos)
-      })
-      .catch(err => {
-        res.status(500).json(err)
-      })
-  }
-
-  static findTodo(req, res) {
-    let id = Number(req.params.id)
-    TodoList
-      .findByPk(id)
-      .then(todo => {
-        if (todo === null) {
-          res.status(404).json({ error: 'not found' })
-        } else {
-          res.status(200).json(todo)
+      if (todoList.length == 0) {
+        throw {
+          name: 'Not Found',
+          message: `empty list`
         }
-      })
-      .catch(err => {
-        res.status(500).json(err)
-      })
+      } else {
+
+        res.status(200).json(todoList)
+      }
+    } catch (err) {
+      next(err)
+    }
   }
 
-  static updateTodo(req, res) {
+  static async findTodo(req, res, next) {
+
+    try {
+      res.status(200).json(todoList)
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  static async updateTodo(req, res, next) {
     let todo = req.body
     let id = Number(req.params.id)
-    TodoList
-      .update({
+
+    try {
+      await TodoList.update({
         title: todo.title,
         description: todo.description,
         status: todo.status,
@@ -73,50 +65,30 @@ class TodosController {
           id: id
         }
       })
-      .then(todo => {
-        if (todo == 0) {
-          res.status(404).json({ error: 'not found' })
-        } else {
-          return TodoList.findByPk(id)
-        }
-      })
-      .then(todoUpdate => {
-        res.status(200).json(todoUpdate)
-      })
-      .catch(err => {
-        if (err.name === 'SequelizeValidationError') {
-          err = err.errors.map(error => error.message)
-          res.status(400).json(err)
-        } else {
-          res.status(500).json(err)
-        }
-      })
-  }
-  static destroyTodo(req, res) {
-    let id = Number(req.params.id)
-    TodoList
-      .findByPk(id)
-      .then(todoDelete => {
-        if (todoDelete !== null) {
-          return todoDelete
-        } else {
-          res.status(404).json({ error: 'not found' })
-        }
-      })
-      .then(todoDelete => {
-        TodoList.destroy({
-          where: {
-            id: id
-          }
-        })
-        res.status(200).json(todoDelete)
-      })
-      .catch(err => {
-        res.status(500).json(err)
-      })
+      const todoEdit = await TodoList.findByPk(id)
+      res.status(200).json(todoEdit)
+
+    } catch (err) {
+      next(err)
+    }
   }
 
+
+  static async destroyTodo(req, res) {
+    let id = Number(req.params.id)
+
+    try {
+      const todoDelete = await TodoList.destroy({
+        where: {
+          id: id
+        }
+      })
+      res.status(200).json(todoDelete)
+    } catch (err) {
+      next(err)
+    }
+  }
 
 }
 
-module.exports = TodosController
+module.exports = { TodosController }
