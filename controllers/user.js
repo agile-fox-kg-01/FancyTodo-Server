@@ -6,6 +6,7 @@ const { signToken } = require('../helpers/jwt')
 class UserController {
     // Login
     static async postLogin(req,res){
+        // Dipake untuk compare password
         const inputPassword = req.body.password
 
         try {
@@ -39,8 +40,9 @@ class UserController {
     // register
     static async postRegister(req,res){
         const newUser = {
-            email: req.body.email || '',
-            password: req.body.password || ''
+            email: req.body.email,
+            password: req.body.password,
+            username: req.body.username
         }
         try{
             const user = await User.create(newUser)
@@ -51,6 +53,8 @@ class UserController {
         }
         
     }
+
+    // Note : EMAIL BELUM UNIQ, PASSWORD BELUM DI VALIDATE LENGTH NYA
 }
 
 module.exports = UserController

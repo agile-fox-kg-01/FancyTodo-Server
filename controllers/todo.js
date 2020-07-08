@@ -2,28 +2,27 @@ const { Todo } = require('../models/index')
 
 class TodoController{
     // Membuat Todo
-    static async postTodo(req,res){
+    static async postTodo(req,res, next){
         let newTodo = {
-            title: req.body.title || '',
-            description: req.body.description || '',
-            status: req.body.status || '',
-            due_date: req.body.due_date || '',
-            UserId: req.userLogin.id
+            title: req.body.title,
+            description: req.body.description,
+            status: req.body.status,
+            due_date: req.body.due_date,
+            UserId: req.userLogin.id,
+            place: req.body.place
         }
         try {
             const todo = await Todo.create(newTodo)
             console.log(todo)
             res.status(201).json(todo)
+
         } catch (err){
-            console.log(err)
-            res.status(500).json(err)
+            next(err)
         }
     }
 
-    // Note : Kendala Respon 400 Belum di tangani
-
     // Memanggil Semua Data Todo
-    static async getTodo(req,res){
+    static async getTodo(req,res,next){
         try {
             
             const allTodo = await Todo.findAll({
@@ -37,20 +36,19 @@ class TodoController{
         }
     }
 
-    // Note : Respon 200 dan 500 Sudah di tangani
-
     // Memanggil Detail Todo Berdasarkan ID
     static async getTodoById(req,res){
         const idInput = req.params.id
-        try{
+        console.log('todo by id')
+        try {
             const todo = await Todo.findByPk(idInput)
-
+            console.log(todo,'=======>')
             res.status(200).json(todo)
-        } catch(err){
-            res.status(404).json(err.message)
+        } catch(err) {
+            console.log(err)
+            res.status(404).json(err)
         }
     }
-    // Note : Respon 200 dan 404 Sudah di tangani
 
     // Mengubah Data Todo By ID
     static async putTodoById(req,res){
@@ -59,7 +57,8 @@ class TodoController{
             title : req.body.title,
             description : req.body.description,
             status : req.body.status,
-            due_date : req.body.due_date
+            due_date : req.body.due_date,
+            place: req.body.place
         }
         try {
             const todo = await Todo.update(newTodo, {
@@ -79,7 +78,6 @@ class TodoController{
             res.status(500).json(err.message)
         }
     }
-    // Note : 400, 404 belum di handle
 
     // Menghapus Todo
     static async deleteTodoById(req,res){

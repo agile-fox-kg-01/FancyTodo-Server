@@ -17,10 +17,14 @@ module.exports = (sequelize, DataTypes) => {
   Todo.init({
     title: {
       type: DataTypes.STRING,
+      allowNull : false,
       validate: {
         notEmpty: {
           args: true,
           msg: 'Field Title wajib diisi'
+        },
+        notNull:{
+          msg: 'Field Title wajib diisi not null'
         }
       }
     },
@@ -54,6 +58,9 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'invalid due date format'
         }
       }
+    },
+    place: {
+      type: DataTypes.STRING,
     },
     UserId : {
       type : DataTypes.INTEGER

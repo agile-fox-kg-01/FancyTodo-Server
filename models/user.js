@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         isEmail : {
           args: true,
           msg: 'Format field nya harus email'
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Field Password wajib diisi'
         }
       }
     },
@@ -33,10 +37,20 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'Field Password wajib diisi'
-        }
+        },
+        
       }
     },
-    role: DataTypes.STRING
+    role: DataTypes.STRING,
+    username: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Field Username wajib diisi'
+        }
+      }
+    }
   }, {
     hooks : {
       beforeCreate : (user) => {
