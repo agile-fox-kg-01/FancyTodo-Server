@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      ToDo.belongsTo(models.User)
     }
   };
   ToDo.init({
@@ -49,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Please insert the Due_Date! Value cant be empty!"
         }
       }
-    }
+    },
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'ToDo',

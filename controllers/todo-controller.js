@@ -2,89 +2,69 @@ const { ToDo } = require('../models/index.js')
 
 class ToDoController {
 
-    //POST TODO
-    static createToDo(req, res) {
-        let title = req.body.title;
+    //Create TODO
+    static async createToDo(req, res, next) {
+        let toDotitle;
         let description = req.body.description;
         let status = req.body.status;
-        let due_date = req.body.due_date;
+        let dueDate = req.body.dueDate;
+        let UserId = req.currentUser.id;
 
-        let objToDo = {
-            title,
-            description,
-            status,
-            due_date
-        }
-
-        ToDo.create(objToDo)
-            .then(result => {
-                res.status(201).json(
-                    {
-                        title: result.title,
-                        description: result.description,
-                        status: result.status,
-                        due_date: result.due_date
-                    }
-                )
-            })
-            .catch(err => {
-                if (err.name === "SequelizeValidationError") {
-                    err = err.errors.map(error => { return error.message })
-                    res.status(400).json(err)
-                } else {
-                    res.status(500).json({ Error: "Internal server error" })
+        try {
+            res.status(201).json(
+                {
+                    title: createdToDo.title,
+                    description: createdToDo.description,
+                    status: createdToDo.status,
+                    dueDate: createdToDo.dueDate,
+                    UserId: createdToDo.UserId
                 }
-            })
+            )
+        } catch (err) {
+            next(err);
+        }
     }
 
 
-    //GET TODO
-    static readToDo(req, res) {
+    //GET TODO LIST
+    static readToDo(req, res, next) {
         ToDo.findAll()
             .then(result => {
                 res.status(200).json(result)
-            }
-            )
+            })
             .catch(err => {
-                res.status(500).json({ Error: "Internal server error" })
+                next(err);
             })
     }
-
 
 
     //GET TODO BY ID
-    static readToDoById(req, res) {
-        let todoId = req.params.id
+    static readToDoById(req, res, next) {
+        let todoId = Number(req.params.id)
 
         ToDo.findByPk(todoId)
             .then(result => {
-                if (result === null) {
-                    res.status(404).json({ Error: "Error not found" })
-                } else {
-                    res.status(200).json(result)
-                }
-            }
-            )
+                res.status(200).json(result)
+            })
             .catch(err => {
-                res.status(500).json({ Error: "Internal server error" })
+                next(err)
             })
     }
 
 
-    //PUT TODO BY ID
-    static updateToDo(req, res) {
+    //UPDATE TODO LIST
+    static updateToDo(req, res, next) {
         let todoId = req.params.id
         let title = req.body.title;
         let description = req.body.description;
         let status = req.body.status;
-        let due_date = req.body.due_date;
-
+        let dueDate = req.body.dueDate;
 
         ToDo.update({
             title,
             description,
             status,
-            due_date
+            dueDate
         },
             {
                 where: {
@@ -93,26 +73,16 @@ class ToDoController {
                 returning: true
             })
             .then(result => {
-                if (result[0] === 0) {
-                    res.status(404).json({ Error: "Error not found" })
-                } else {
-                    res.status(200).json(result[1])
-                }
+                res.status(200).json(result[1])
             })
             .catch(err => {
-                if (err.name === "SequelizeValidationError") {
-                    err = err.errors.map(error => { return error.message })
-                    res.status(400).json(err)
-                } else {
-                    res.status(500).json({ Error: "Internal server error" })
-                }
+                next(err)
             })
     }
 
 
-
     //DELETE TODO
-    static deleteToDo(req, res) {
+    static deleteToDo(req, res, next) {
         let todoId = Number(req.params.id)
         let obj;
 
@@ -127,14 +97,10 @@ class ToDoController {
                 })
             })
             .then(result => {
-                if (result === 0) {
-                    res.status(404).json({ Error: "Error not found" })
-                } else {
-                    res.status(200).json(obj)
-                }
+                res.status(200).json(obj)
             })
             .catch(err => {
-                res.status(500).json({ Error: "Internal server error" })
+                next(err)
             })
     }
 }
