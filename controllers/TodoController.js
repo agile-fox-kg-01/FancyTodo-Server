@@ -23,13 +23,13 @@ class TodoController {
     static async getTodoRootHandler(req, res, next) {
         const userId = req.userLogin.id;
         try {
-            const allTodo = await Todo.findAll({
+            const todos = await Todo.findAll({
                 where: {
                     UserId: userId
                 }
             });
             
-            res.status(200).json(allTodo);
+            res.status(200).json(todos);
 
         } catch(err) {
             next(err);
