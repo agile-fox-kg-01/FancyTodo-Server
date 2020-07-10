@@ -47,7 +47,7 @@
     **Content:**
     ```json
     {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIyQG1haWwuY29tIiwiaWF0IjoxNTk0NDA1MDcwfQ.lFKTfebSF787iUtPO4Q17j2q-wBxyx78kXLEsJqnU64"
+        "token": "user_token"
     }
     ```
 
