@@ -36,12 +36,37 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    role: DataTypes.STRING
+    firstname: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'fill in your firstname'
+        }
+      }
+    },
+    lastname: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'fill in your lastname'
+        }
+      }
+    },
+    birthOfDate: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'fill in your birth date'
+        }
+      }
+    }
   }, {
     hooks: {
       beforeCreate(user) {
         user.password = hashPassword(user.password)
-        user.role = 'normaluser'
       }
     },
     sequelize,

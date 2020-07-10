@@ -3,15 +3,11 @@ const router = express.Router()
 
 const TodoController = require('../controllers/TodoController')
 const userRouter = require('./user-router')
-const { authentication, isOwner } = require('../middlewares/auth')
+const taskRouter = require('./task-router')
 
-router.get('/tasks', authentication, TodoController.index)
-router.post('/tasks', authentication, TodoController.create)
-router.get('/tasks/:id', authentication, isOwner, TodoController.read)
-router.put('/tasks/:id', authentication, isOwner, TodoController.update)
-router.delete('/tasks/:id', authentication, isOwner, TodoController.delete)
 router.get('/weather', TodoController.weather)
 
 router.use('/user', userRouter)
+router.use('/task', taskRouter)
 
 module.exports = router

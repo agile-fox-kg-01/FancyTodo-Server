@@ -10,6 +10,7 @@ class TodoController {
             next(err)
         })
     }
+
     static create(req, res, next) {
         const task = {
             title: req.body.title,
@@ -30,6 +31,7 @@ class TodoController {
             }
         })
     }
+
     static read(req, res, next) {
         Task.findByPk(req.params.id).then(data => {
             if(data == null) {
@@ -44,6 +46,7 @@ class TodoController {
             next(err)
         })
     }
+
     static update(req, res, next) {
         const task = {
             title: req.body.title,
@@ -74,6 +77,7 @@ class TodoController {
             }
         })
     }
+    
     static delete(req, res) {
         let task
         Task.findByPk(req.params.id).then(data => {
@@ -87,7 +91,10 @@ class TodoController {
                     errors: 'Task Not Found'
                 })
             } else {
-                res.status(200).json(task)
+                res.status(200).json({
+                    title: task.title,
+                    description: task.description
+                })
             }
         }).catch(err => {
             next(err)

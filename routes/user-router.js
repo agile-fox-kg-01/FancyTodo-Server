@@ -4,6 +4,7 @@ const router = express.Router()
 const UserController = require('../controllers/UserController')
 
 router.post('/login', UserController.login)
+router.post('/login/google', UserController.oauthGoogle)
 router.post('/register', UserController.register)
 
 module.exports = router
