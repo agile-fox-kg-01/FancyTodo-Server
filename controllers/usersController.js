@@ -1,6 +1,7 @@
 const { User } = require('../models/index')
 const { comparePassword } = require('../helper/bcrypt');
 const { signToken } = require('../helper/jwt')
+const { verify } = require(`../helper/googleOauth`)
 
 class UsersController {
     static async login(req, res, next) {
@@ -34,7 +35,7 @@ class UsersController {
                 const token = signToken(payload);
 
                 res.status(200).json({ accessToken: token });
-                
+
             }
         } catch (err) {
             next(err);
@@ -64,13 +65,87 @@ class UsersController {
                 err = err.errors.map(error => error.message)
                 next({
                     name: `BadRequest`,
-                    errors: {message: err}
+                    errors: { message: err }
                 })
             } else {
                 // console.log(err.message)
                 next(err);
             }
         }
+    }
+
+    static async oauthGoogle(req, res, next) {
+
+        // console.log(req.headers);
+
+        const google_token = req.headers.google_token
+
+        try {
+            const googlePayload = await verify(google_token);
+            const googleEmail =  googlePayload.email;
+
+            // console.log('ini gmail: ', googleEmail);
+
+            // res.status(200).json({
+            //     email: googleEmail
+            // })
+
+            const user = await User.findOne({
+                where: {
+                    email: googleEmail
+                }
+            })
+
+            // console.log(user.email)
+
+            if(user) {
+
+                // console.log('ini password PG: ', user.password)
+
+                if(!comparePassword(process.env.google_default_password, user.password)) {
+                    throw `Please login via website`
+                } else {
+
+                    // console.log('ini email PG: ', user.email)
+
+                    const payload = {
+                        email: user.email
+                    }
+    
+                    const token = signToken(payload);
+
+                    // console.log('ini email PG: ', token)
+
+                    res.status(200).json({
+                        token
+                    })
+                }
+            } else {
+                const newUser = await User.create({
+                    email: googleEmail,
+                    password: process.env.google_default_password
+                })
+
+                const payload = {
+                    email: newUser.email
+                }
+
+                const token = signToken(payload);
+                
+                res.status(201).json({
+                    token
+                })
+            }
+
+        
+        } catch(err) {
+
+            // console.log(err)
+
+            next(err)
+        }
+
+
     }
 }
 

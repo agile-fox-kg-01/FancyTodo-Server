@@ -22,8 +22,12 @@ const errorHandler = (err, req, res, next) => {
 
         res.status(400).json(err);
     } else  {
-        console.log(err.message)
-        return res.status(500).json(err)
+        
+        console.log(err)
+
+        return res.status(500).json({
+            errors: err
+        })
     }
 }
 

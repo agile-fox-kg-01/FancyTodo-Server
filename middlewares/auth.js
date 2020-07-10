@@ -17,7 +17,7 @@ async function authentification (req, res, next) {
     try {
         const payload = verifyToken(token)
 
-        console.log(payload)
+        // console.log(payload)
 
         const user = await User.findOne({
             where: {
