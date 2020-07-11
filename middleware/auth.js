@@ -18,26 +18,15 @@ async function authentication(req, res, next) {
                 req.currentUser = currentUser
                 next();
             } else {
-                res.status(401).json(
-                    {
-                        code: "401",
-                        message: "Please login to use this feature!"
-                    }
-                )
+                throw { name: "Unauthorized" }
             }
 
         } catch (err) {
-            res.status(500).json({
-                code: "500",
-                message: "Internal server error"
-            })
+            throw { name: "Internal server error" }
         }
 
     } else {
-        res.status(401).json({
-            code: "401",
-            message: "Please login to use this feature!"
-        })
+        throw { name: "Unauthorized" }
     }
 }
 
@@ -50,23 +39,14 @@ async function authorization(req, res, next) {
             if (currentToDo.UserId == req.currentUser.id) {
                 next();
             } else {
-                res.status(401).json({
-                    code: "401",
-                    message: "User unauthorized"
-                })
+                throw { name: "Unauthorized" }
             }
         } else {
-            res.status(404).json({
-                code: "404",
-                message: "Not Found"
-            })
+            throw { name: "Not Found" }
         }
 
     } catch (err) {
-        res.status(500).json({
-            code: "500",
-            message: "Internal server error"
-        })
+        throw { name: "Internal server error" }
     }
 }
 

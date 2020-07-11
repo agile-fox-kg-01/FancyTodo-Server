@@ -713,3 +713,49 @@
           "message": "Internal Server Error"
         }
         ```
+----
+  **User Login With Google Account**
+----
+  Login to access application feature with google account
+
+* **URL**
+
+  /user/login/google
+
+* **Method:**
+  
+  `POST`
+
+* **Request Headers**
+
+  none
+  
+* **URL Params**
+
+  none
+
+* **Data Params**
+
+  none
+
+* **Success Response:**
+  
+  
+  * **Code:** 200 OK <br />
+    **Content:** 
+    ```json
+    {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXI0IiwiaWF0IjoxNTk0MTE5NDQyfQ.N9zq3FCzHqRIaNwL7P3-tdm9Drs40jhw_zWZRtgF078"
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+        **Content:** 
+        ```json
+        {
+          "code": "500",
+          "message": "Internal Server Error"
+        }
+        ```

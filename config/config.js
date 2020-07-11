@@ -1,9 +1,11 @@
+require('dotenv').config()
+
 module.exports = {
   "development": {
-    "username": process.env.CONFIG_USERNAME,
-    "password": process.env.CONFIG_PASSWORD,
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
     "database": "Fancy_ToDo_App",
-    "host": process.env.CONFIG_HOST,
+    "host": process.env.DB_HOST,
     "dialect": "postgres"
   },
   "test": {

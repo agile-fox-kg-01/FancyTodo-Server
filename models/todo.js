@@ -45,10 +45,6 @@ module.exports = (sequelize, DataTypes) => {
     dueDate: {
       type: DataTypes.STRING,
       validate: {
-        isDate: {
-          args: true,
-          msg: "Please input due date with this format (yyyy/mm/dd)"
-        },
         notEmpty: {
           args: true,
           msg: "Due Date cannot be empty!"
