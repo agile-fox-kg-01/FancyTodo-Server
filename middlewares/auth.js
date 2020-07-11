@@ -3,7 +3,7 @@ const {verifyToken} = require('../helpers/jwt.js');
 
 async function authentication(req, res, next) {
     const token = req.headers.token;
-
+    
     if(!token) {
         next({
             name: '401 Unauthorized',

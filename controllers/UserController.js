@@ -18,9 +18,15 @@ class UserController {
             const dataPassword = user ? user.password : '';
 
             if(!user) {
-                throw 'Invalid username or password'
+                next({
+                    name: '400 Bad Request',
+                    errors: [{message: 'Invalid username or password'}]
+                });
             } else if(!comparePassword(password, dataPassword)) {
-                throw 'Invalid username or password'
+                next({
+                    name: '400 Bad Request',
+                    errors: [{message: 'Invalid username or password'}]
+                });
             } else {
                 const payload = {
                     email: user.email
@@ -28,7 +34,7 @@ class UserController {
 
                 const token = signToken(payload);
 
-                res.status(200).json({token});
+                res.status(200).json({name: user.name, token});
             }
 
         } catch(err) {
@@ -52,7 +58,10 @@ class UserController {
 
             if(user) {
                 if(!comparePassword(process.env.GOOGLE_DEFAULT_PASSWORD, user.password)) {
-                    throw 'Please login via website';
+                    next({
+                        name: '400 Bad Request',
+                        errors: [{message: 'Please login through website'}]
+                    });
                 } else {
                     const payload = {
                         email: user.email
@@ -60,7 +69,7 @@ class UserController {
     
                     const token = signToken(payload);
     
-                    res.status(200).json({token});
+                    res.status(200).json({name: user.name, token});
                 }
             } else {
                 const newUser = {
@@ -76,7 +85,7 @@ class UserController {
 
                 const token = signToken(payload);
 
-                res.status(200).json({token});
+                res.status(200).json({name: user.name, token});
             }
             
         } catch(err) {
@@ -94,7 +103,15 @@ class UserController {
         try {
             const user = await User.create(newUser);
             
-            res.status(201).json({user});
+            const createdUser = {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
+            }
+
+            res.status(201).json({user: createdUser});
         } catch(err) {
             next(err);
         }

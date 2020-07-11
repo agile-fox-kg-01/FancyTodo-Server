@@ -7,13 +7,13 @@
 ## API Documentation
 
 ----
-  **Create Todo**
+  **Register**
 ----
-  Add a new todo in FancyTodo app
+  Register as a new user in FancyTodo app
 
 * **URL**
 
-  /todos
+  /register
 
 * **Method:**
 
@@ -33,57 +33,186 @@
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | title | <YOUR_TITLE> | true |
-  | description | <YOUR_DESCRIPTION> | true |
-  | status | <YOUR_STATUS> | true |
-  | due_date | <YOUR_DUE_DATE> | true |
+  | email | <YOUR_EMAIL> | true |
+  | password | <YOUR_PASSWORD> | true |
+  | name | <YOUR_NAME> | true |
 
 * **Success Response:**
 
 
-  * **Code:** 201 CREATED <br />
+  * **Code:** 201 Created <br />
+    **Content:**
+    ```json
+    {
+      "user": {
+          "id": 9,
+          "email": "shingoaoi@mail.com",
+          "name": "Shingo Aoi",
+          "createdAt": "2020-07-11T10:15:22.707Z",
+          "updatedAt": "2020-07-11T10:15:22.707Z"
+      }
+    }
+    ```
+
+* **Error Response:**
+
+    * **Code:** 400 Bad Request <br />
+        **Content:**
+        ```json
+        {
+          "message": [
+              "Email has been registered!"
+          ]
+        }
+        ```
+
+        OR
+
+        ```json
+        {
+          "message": [
+              "You have to enter your email with this format: email@email.com",
+              "Email is required!",
+              "Password is required!",
+              "Name is required!"
+          ]
+        }
+        ```
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+        **Content:** 
+        ```json
+        { "message" : "Internal Server Error" }
+        ```
+
+----
+  **Login**
+----
+  Login as a user in FancyTodo app
+
+* **URL**
+
+  /login
+
+* **Method:**
+
+  `POST`
+
+* **Request Headers**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | Content-Type | application/x-www-form-urlencoded | true |
+
+* **URL Params**
+
+   none
+
+* **Data Params**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | email | <YOUR_EMAIL> | true |
+  | password | <YOUR_PASSWORD> | true |
+
+* **Success Response:**
+
+
+  * **Code:** 200 OK <br />
+    **Content:**
+    ```json
+    {
+        "name": "Tsubasa Ozora",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhcHRvem9yYUBtYWlsLmNvbSIsImlhdCI6MTU5NDQ2MTA3N30.CjzMKPv1rhDWkB1CVl02NGCWsMwX2IO_B3N9GuWNv6U"
+    }
+    ```
+
+* **Error Response:**
+
+    * **Code:** 400 Bad Request <br />
+        **Content:**
+        ```json
+        {
+          "message": "Invalid username or password"
+        }
+        ```
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+        **Content:** 
+        ```json
+        { "message" : "Internal Server Error" }
+        ```
+
+----
+  **Create Todo**
+----
+  Add a new todo in FancyTodo app
+
+* **URL**
+
+  /todos
+
+* **Method:**
+
+  `POST`
+
+* **Request Headers**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | Content-Type | application/x-www-form-urlencoded | true |
+  | token | <USER_TOKEN> | true |
+
+* **URL Params**
+
+   none
+
+* **Data Params**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | title | <TODO_TITLE> | true |
+  | description | <TODO_DESCRIPTION> | true |
+  | due_date | <TODO_DUE_DATE> | true |
+
+* **Success Response:**
+
+
+  * **Code:** 201 Created <br />
     **Content:**
     ```json
     {
       "title": "Fancy todo API documentation",
       "description": "Fancy todo API documentation",
-      "status": "On Progess",
+      "status": "On Progress",
       "due_date": 2020-06-07T00:00:00.000Z
     }
     ```
 
 * **Error Response:**
 
-    * **Code:** 400 BAD REQUEST <br />
+    * **Code:** 400 Bad Request <br />
         **Content:**
         ```json
-        ["Title is required!"]
+        {
+          "message": [
+              "Title is required!",
+              "Description is required!",
+              "Due date is required!"
+          ]
+        }
         ```
 
-        OR
-
-        ```json
-        ["Description is required!"]
-        ```
-
-        OR
-
-        ```json
-        ["Status is required!"]
-        ```
-
-        OR
-
-        ```json
-        ["Due date is required!"]
-        ```
-    
     OR
 
-    * **Code:** 500 INTERNAL SERVER ERROR <br />
+    * **Code:** 500 Internal Server Error <br />
         **Content:** 
         ```json
-        { "error" : "Internal server error" }
+        { "message" : "Internal Server Error" }
         ```
 
 ----
@@ -103,7 +232,7 @@
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | Content-Type | application/x-www-form-urlencoded | true |
+  | token | <USER_TOKEN> | true |
 
 * **URL Params**
 
@@ -116,33 +245,39 @@
 * **Success Response:**
 
 
-  * **Code:** 201 CREATED <br />
+  * **Code:** 200 OK <br />
     **Content:**
     ```json
     [
       {
-        "id": 1,
-        "title": "Fancy todo API documentation",
-        "description": "Fancy todo API documentation",
-        "status": "On Progess",
-        "due_date": 2020-06-07T00:00:00.000Z
+          "id": 1,
+          "title": "Fancy todo",
+          "description": "Fancy todo login feature",
+          "status": "On Progress",
+          "dueDate": "2020-07-11T00:00:00.000Z",
+          "UserId": 1,
+          "createdAt": "2020-07-11T09:40:13.188Z",
+          "updatedAt": "2020-07-11T09:40:13.188Z"
       },
       {
-        "id": 2,
-        "title": "Fancy todo API documentation",
-        "description": "Fancy todo API documentation",
-        "status": "On Progess",
-        "due_date": 2020-06-07T00:00:00.000Z
+          "id": 2,
+          "title": "Fancy todo",
+          "description": "Fancy todo API documentation",
+          "status": "On Progress",
+          "dueDate": "2020-07-11T00:00:00.000Z",
+          "UserId": 1,
+          "createdAt": "2020-07-11T09:52:56.000Z",
+          "updatedAt": "2020-07-11T09:52:56.000Z"
       }
     ]
     ```
 
 * **Error Response:**
 
-    * **Code:** 500 INTERNAL SERVER ERROR <br />
+    * **Code:** 500 Internal Server Error <br />
         **Content:** 
         ```json
-        { "error" : "Internal server error" }
+        { "message" : "Internal Server Error" }
         ```
 
 ----
@@ -163,12 +298,13 @@
   | key | value | required |
   | :---: | :---: | :---: |
   | Content-Type | application/x-www-form-urlencoded | true |
+  | token | <USER_TOKEN> | true |
 
 * **URL Params**
 
    | key | value | required |
    | :---: | :---: | :---: |
-   | id | <YOUR_ID> | true |
+   | id | <TODO_ID> | true |
 
 * **Data Params**
 
@@ -180,22 +316,24 @@
   * **Code:** 200 OK <br />
     **Content:**
     ```json
-    [
-      {
-        "title": "Fancy todo API documentation",
-        "description": "Fancy todo API documentation",
-        "status": "On Progess",
-        "due_date": 2020-06-07T00:00:00.000Z
-      }
-    ]
+    {
+      "id": 1,
+      "title": "Fancy todo",
+      "description": "Fancy todo login feature",
+      "status": "On Progress",
+      "dueDate": "2020-07-11T00:00:00.000Z",
+      "UserId": 1,
+      "createdAt": "2020-07-11T09:40:13.188Z",
+      "updatedAt": "2020-07-11T09:40:13.188Z"
+    }
     ```
 
 * **Error Response:**
 
-    * **Code:** 404 NOT FOUND <br />
+    * **Code:** 404 Not Found <br />
         **Content:** 
         ```json
-        { "error" : "Not found" }
+        { "message" : "Not Found" }
         ```
 
 ----
@@ -216,21 +354,22 @@
   | key | value | required |
   | :---: | :---: | :---: |
   | Content-Type | application/x-www-form-urlencoded | true |
+  | token | <USER_TOKEN> | true |
 
 * **URL Params**
 
    | key | value | required |
    | :---: | :---: | :---: |
-   | id | <YOUR_ID> | true |
-
+   | id | <TODO_ID> | true |
+   
 * **Data Params**
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | title | <YOUR_TITLE> | true |
-  | description | <YOUR_DESCRIPTION> | true |
-  | status | <YOUR_STATUS> | true |
-  | due_date | <YOUR_DUE_DATE> | true |
+  | title | <TODO_TITLE> | true |
+  | description | <TODO_DESCRIPTION> | true |
+  | status | <TODO_STATUS> | true |
+  | due_date | <TODO_DUE_DATE> | true |
 
 * **Success Response:**
 
@@ -239,53 +378,46 @@
     **Content:**
     ```json
     {
-      "title": "Fancy todo API documentation",
-      "description": "Fancy todo API documentation",
-      "status": "On Progess",
-      "due_date": 2020-06-07T00:00:00.000Z
+      "id": 1,
+      "title": "Fancy application",
+      "description": "Fancy application login feature",
+      "status": "Finished",
+      "dueDate": "2020-07-11T00:00:00.000Z",
+      "UserId": 1,
+      "createdAt": "2020-07-11T09:40:13.188Z",
+      "updatedAt": "2020-07-11T09:59:20.133Z"
     }
     ```
 
 * **Error Response:**
 
-    * **Code:** 400 BAD REQUEST <br />
+    * **Code:** 400 Bad Request <br />
         **Content:**
         ```json
-        ["Title is required!"]
-        ```
-
-        OR
-
-        ```json
-        ["Description is required!"]
-        ```
-
-        OR
-
-        ```json
-        ["Status is required!"]
-        ```
-
-        OR
-
-        ```json
-        ["Due date is required!"]
+        {
+          "message": [
+              "Title is required!",
+              "Description is required!",
+              "Due date is required!",
+              "Status is required!"
+          ]
+        }
         ```
     
     OR
 
-    * **Code:** 404 NOT FOUND <br />
+    * **Code:** 404 Not Found <br />
         **Content:** 
         ```json
-        { "error" : "Not found" }
+        { "message" : "Not Found" }
         ```
 
     OR
 
-    * **Code:** 500 INTERNAL SERVER ERROR <br />
+    * **Code:** 500 Internal Server Error <br />
         **Content:** 
         ```json
-        { "error" : "Internal server error" }
+        { "message" : "Internal server error" }
         ```
 
 ----
@@ -306,6 +438,7 @@
   | key | value | required |
   | :---: | :---: | :---: |
   | Content-Type | application/x-www-form-urlencoded | true |
+  | token | <USER_TOKEN> | true |
 
 * **URL Params**
 
@@ -324,25 +457,29 @@
     **Content:**
     ```json
     {
-      "title": "Fancy todo API documentation",
+      "id": 5,
+      "title": "Fancy todo",
       "description": "Fancy todo API documentation",
-      "status": "On Progess",
-      "due_date": 2020-06-07T00:00:00.000Z
+      "status": "On Progress",
+      "dueDate": "2020-07-11T00:00:00.000Z",
+      "UserId": 1,
+      "createdAt": "2020-07-11T09:52:56.017Z",
+      "updatedAt": "2020-07-11T09:52:56.017Z"
     }
     ```
 
 * **Error Response:**
 
-    * **Code:** 404 NOT FOUND <br />
+    * **Code:** 404 Not Found <br />
         **Content:** 
         ```json
-        { "error" : "Not found" }
+        { "message" : "Not Found" }
         ```
 
     OR
 
-    * **Code:** 500 INTERNAL SERVER ERROR <br />
+    * **Code:** 500 Internal Server Error <br />
         **Content:** 
         ```json
-        { "error" : "Internal server error" }
+        { "error" : "Internal Server Error" }
         ```

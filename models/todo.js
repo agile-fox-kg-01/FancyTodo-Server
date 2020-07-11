@@ -55,6 +55,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     }
   }, {
+    hooks: {
+      beforeCreate: (todo) => {
+        todo.status = 'On Progress';
+      }
+    },
     sequelize,
     modelName: 'Todo',
   });

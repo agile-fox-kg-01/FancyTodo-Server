@@ -5,10 +5,10 @@ class TodoController {
         const objTodo = {
             title: req.body.title,
             description: req.body.description,
-            status: req.body.status,
             dueDate: req.body.dueDate,
             UserId: req.userLogin.id
         };
+        console.log(objTodo);
         
         try {
             const newTodo = await Todo.create(objTodo);
@@ -16,6 +16,8 @@ class TodoController {
             res.status(201).json({newTodo});
 
         } catch(err) {
+            console.log(err);
+            
             next(err);
         }
     }
@@ -26,7 +28,10 @@ class TodoController {
             const todos = await Todo.findAll({
                 where: {
                     UserId: userId
-                }
+                },
+                order: [
+                    ['createdAt', 'ASC']
+                ]
             });
             
             res.status(200).json(todos);
@@ -42,7 +47,6 @@ class TodoController {
 
         try {
             const todo = await Todo.findByPk(paramId);
-            console.log(todo);
             
             res.status(200).json(todo);
         } catch(err) {

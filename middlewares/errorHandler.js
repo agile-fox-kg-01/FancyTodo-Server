@@ -1,8 +1,12 @@
 const errorHandler = (err, req, res, next) => {
     if(err.name === 'SequelizeValidationError') {
         err = err.errors.map(error => error.message);
-
+        
         res.status(400).json({message: err});
+    } else if(err.name === 'SequelizeUniqueConstraintError') {
+        err = err.errors.map(error => error.message);
+
+        res.status(400).json({message: err})
     } else if(err.name === '401 Unauthorized') {
         let message = err.errors[0].message;
 
@@ -15,6 +19,10 @@ const errorHandler = (err, req, res, next) => {
         let message = err.errors[0].message;
 
         res.status(404).json({message})
+    } else if(err.name === '400 Bad Request') {
+        let message = err.errors[0].message;
+
+        res.status(400).json({message: message});
     } else {
         res.status(500).json({message: 'Internal Server Error'})
     }
