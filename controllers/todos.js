@@ -1,10 +1,9 @@
 const { TodoList } = require('../models/index')
-const { due_dateFormat } = require('../helpers/due_date.js')
+
 
 class TodosController {
 
   static async create(req, res) {
-
     try {
       const newTodo = await TodoList.create({
         title: req.body.title,
@@ -13,7 +12,15 @@ class TodosController {
         due_date: req.body.due_date,
         UserId: userLogin.id
       })
-      res.status(201).json(newTodo)
+      const dataTodos = await TodoList.findAll({
+        where: {
+          UserId: userLogin.id
+        }
+      }, {
+        order: [['id', 'DESC'],]
+      })
+      console.log(dataTodos);
+      res.status(201).json({ newTodo, dataTodos })
     } catch (err) {
       next(err)
     }
@@ -26,6 +33,8 @@ class TodosController {
         where: {
           UserId: userLogin.id
         }
+      }, {
+        order: [['id', 'DESC'],]
       })
       if (todoList.length == 0) {
         throw {
@@ -66,7 +75,16 @@ class TodosController {
         }
       })
       const todoEdit = await TodoList.findByPk(id)
-      res.status(200).json(todoEdit)
+      const dataTodos = await TodoList.findAll({
+        where: {
+          UserId: todoEdit.UserId
+        }
+      }, {
+        order: [['id', 'DESC'],]
+      })
+      res.status(200).json({
+        todoEdit, dataTodos
+      })
 
     } catch (err) {
       next(err)
@@ -74,7 +92,7 @@ class TodosController {
   }
 
 
-  static async destroyTodo(req, res) {
+  static async destroyTodo(req, res, next) {
     let id = Number(req.params.id)
 
     try {
@@ -83,9 +101,40 @@ class TodosController {
           id: id
         }
       })
-      res.status(200).json(todoDelete)
+      const dataTodos = await TodoList.findAll({
+        where: {
+          UserId: userLogin.id
+        }
+      }, {
+        order: [['id', 'DESC'],]
+      })
+      res.status(200).json({
+        todoDelete, dataTodos
+      })
     } catch (err) {
       next(err)
+    }
+  }
+
+  static async editStatus(req, res, next) {
+    try {
+      const todo = await TodoList.update({
+        status: req.body.status
+      }, {
+        where: {
+          id: todoList.id
+        }
+      })
+      const dataTodos = await TodoList.findAll({
+        where: {
+          UserId: userLogin.id
+        }
+      }, {
+        order: [['id', 'DESC'],]
+      })
+      res.status(201).json({ dataTodos })
+    } catch (error) {
+      next(error)
     }
   }
 

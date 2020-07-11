@@ -13,10 +13,17 @@ async function authentication(req, res, next) {
     })
   } else {
     let payload = verifyToken(token)
+    if (payload.email === undefined) {
+      payload = payload
+    } else {
+      payload = payload.email
+    }
+
+    // console.log(payload);
     try {
       const user = await User.findOne({
         where: {
-          email: payload.email
+          email: payload
         }
       })
       if (!user) {

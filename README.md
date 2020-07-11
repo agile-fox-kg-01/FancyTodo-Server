@@ -60,7 +60,10 @@ Deploy Here:
     * **Code:** 400 BAD REQUEST <br />
       **Content**
       ```json
-      {"error": "email must be unique"}
+      {
+        "status": 400
+        "error": "email must be unique"
+      }
       ```
 
 **User Login**
@@ -107,8 +110,10 @@ Deploy Here:
       **Content**
       ```json
       {
-        "errors": "invalid username/password"
+        "status": 400
+        "error": "invalid username/password"
       }
+      
       ```
 
 
@@ -163,25 +168,37 @@ Deploy Here:
   * **Code:** 400 BAD REQUEST <br />
     **Content**
     ```json
-    {"errors":[ "Title field shouldn't be empty" ]}
+     {
+        "status": 400
+        "error":[ "Title field shouldn't be empty" ]
+    }
     ```
 
     OR
 
     ```json
-    {"errors":[ "Description field shouldn't be empty" ]}
+    {
+        "status": 400
+        "error":[ "Description field shouldn't be empty" ]
+    }
     ```
 
     OR 
 
     ```json
-    {"errors": ["Status field shouldn't be empty"]}
+    {
+        "status": 400
+        "error":["Status field shouldn't be empty"]
+    }
     ```
 
     OR
 
     ```json
-    {"errors": ["Due_date field shouldn't be empty"]}
+    {
+        "status": 400
+        "error":["Due_date field shouldn't be empty"]
+    }
     ```
     
   OR
@@ -189,7 +206,10 @@ Deploy Here:
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content**
     ```json
-    {"error": "internal server error"}
+    {
+        "status": 500
+        "error":"internal server error"
+    }
     ```
     
 
@@ -238,7 +258,10 @@ Deploy Here:
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content**
     ```json
-    {"error": "internal server error"}
+     {
+        "status": 500
+        "error":"internal server error"
+    }
     ```
 
 
@@ -290,7 +313,10 @@ Deploy Here:
   * **Code:** 404 NOT FOUND <br />
     **Content**
     ```json
-    {"error": "not found"}
+    {
+      "status": 404
+      "error": "not found"
+    }
     ```
 
 
@@ -347,42 +373,48 @@ Deploy Here:
   * **Code:** 400 BAD REQUEST <br />
     **Content**
     ```json
-    {"error": "Title field shouldn't be empty"}
+     {
+        "status": 400
+        "error":[ "Title field shouldn't be empty" ]
+    }
     ```
 
     OR
 
     ```json
-    {"error": "Description field shouldn't be empty"}
+    {
+        "status": 400
+        "error":[ "Description field shouldn't be empty" ]
+    }
     ```
 
     OR 
 
     ```json
-    {"error": "Status field shouldn't be empty"}
+    {
+        "status": 400
+        "error":["Status field shouldn't be empty"]
+    }
     ```
 
     OR
 
     ```json
-    {"error": "Due_date field shouldn't be empty"}
+    {
+        "status": 400
+        "error":["Due_date field shouldn't be empty"]
+    }
     ```
-
-  OR
-
-  * **Code:** 404 NOT FOUND <br />
-    **Content**
-    ```json
-    {"error": "not found"}
-    ```
-
     
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content**
     ```json
-    {"error": "internal server error"}
+    {
+        "status": 500
+        "error":"internal server error"
+    }
     ```
 
 
@@ -434,7 +466,10 @@ Deploy Here:
   * **Code:** 404 NOT FOUND <br />
     **Content**
     ```json
-    {"error": "not found"}
+    {
+      "status": 404
+      "error": "not found"
+    }
     ```
 
     
@@ -443,6 +478,110 @@ Deploy Here:
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content**
     ```json
-    {"error": "internal server error"}
+    {
+      "status":500
+      "error": "internal server error"
+    }
     ```
 
+
+ **Weather API**
+---
+  
+  * **URL**
+   
+    /weathers
+
+  * **Method**
+
+    `GET`
+
+  * **Request Headers**
+
+    none
+
+  * **URL Params**
+
+    none
+
+  * **Data Params**
+    
+    none
+
+  * **Success Response**
+
+    * **Code:** 201 CREATED <br />
+    **Content:**
+    ```string
+     The weather now in Indonesia is about 27 Degrees Celcius
+    ```
+  * **Errors Response**
+
+    * **Code:** 404 BAD REQUEST <br />
+      **Content**
+      ```json
+      {
+        "status": 404
+        "error": "not found"
+      }
+      ```
+
+**User Google Login**
+---
+  
+  * **URL**
+   
+    /users/login/google
+
+  * **Method**
+
+    `POST`
+
+  * **Request Headers**
+
+    | key | value | required |
+    | :--- | :---: | :---:|
+    | Content-Type | application/x-www-form-urlencoded | true |
+
+  * **URL Params**
+
+    none
+
+  * **Data Params**
+    
+    | key | value | required |
+    | :--: | :--: | :--: |
+    | email | "nurfiahidris098gmail.com"| true |
+    | password | "nurfiah12345" |true |
+
+  * **Success Response**
+
+
+    * **Code:** 200 OK <br />
+    **Content:**
+    ```json
+      {
+       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51cmZpYWhpZHJpczA5OEBnbWFpbC5jb20iLCJpYXQiOjE1OTQwNzg5NjV9.Q8JSD8HhZqRRjPFahSnqDYfjUIHvjMbaSWICxEk_Hv4"
+      }
+      ```
+  * **Errors Response**
+
+    * **Code:** 400 BAD REQUEST <br />
+      **Content**
+      ```json
+      {
+        "status": 400
+        "error": "invalid username/password"
+      }
+      
+      ```
+    OR
+    * **Code:** 500 INTERNAL SERVER ORDER <br />
+      **Content**
+
+       ```json
+      {
+        "status": 500
+        "error":"internal server error"
+      }
+      ```

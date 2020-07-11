@@ -24,7 +24,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: `Password field shouldn't be empty`
+        }
+      }
+    },
     date_of_birth: DataTypes.DATE
   }, {
     hooks: {

@@ -7,25 +7,41 @@ const weather = axios.create({
   }
 })
 
+const joke = axios.create({
+  baseURL: "https://api.kanye.rest"
+})
+
 
 
 class apiController {
 
-
-
   static getWeather(req, res, next) {
     weather
-      .get('/weather?q=Makassar&appid=dccd924444a1d136f002aeac48909167&units=metric')
+      .get('/weather?q=Indonesia&appid=dccd924444a1d136f002aeac48909167&units=metric')
       .then(result => {
         const temp = result.data.main.temp
         const desc = result.data.weather[0].description
-        const icon = result.data.weather[0].icon
-        const img = `http://openweathermap.org/img/wn/${icon}d@2x.png`
-        const output = `The weather now in Makassar is ${temp} Degrees Celcius and ${desc} \n ${img}`
-        res.status(200).json(output)
+        const output = `The weather now in Indonesia is about  ${temp} Degrees Celcius`
+        res.status(200).json({ output })
       })
       .catch(err => {
-        res.status(500).json(err.message)
+        throw {
+          name: "Not Found",
+          message: "not found"
+        }
+      })
+  }
+  static randomQuote() {
+    joke
+      .get("https://api.kanye.rest")
+      .then(result => {
+        res.status(200).json({ result })
+      })
+      .catch(err => {
+        throw {
+          name: "Not Found",
+          message: "not found"
+        }
       })
   }
 }
