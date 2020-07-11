@@ -44,18 +44,13 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING,
     username: {
       type: DataTypes.STRING,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: 'Field Username wajib diisi'
-        }
-      }
     }
   }, {
     hooks : {
       beforeCreate : (user) => {
         user.password = hashPassword(user.password)
         user.role = 'Not Admin'
+        user.username = user.username ? user.username : 'Not Set'
       }
     },
     sequelize,
