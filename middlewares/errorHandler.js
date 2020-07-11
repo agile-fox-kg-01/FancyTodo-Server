@@ -13,17 +13,25 @@ const errorHandler = (err, req, res, next) => {
         })
     } else if(err.name == `SequelizeUniqueConstraintError`) {
         return res.status(400).json({
-            errors: {
-                message: `email already used`
-            }
+            errors: `email already used`
+            
         })
     } else if (err.name == 'SequelizeValidationError') {
         err = err.errors.map(error => error.message)
 
-        res.status(400).json(err);
+        // console.log(err)
+
+        return res.status(400).json({
+            errors: err
+        })
+    } else if (err.name == 'SequelizeDatabaseError') {
+
+        return res.status(400).json({
+            errors: `Invalid date`
+        })
     } else  {
         
-        console.log(err)
+        // console.log(err)
 
         return res.status(500).json({
             errors: err

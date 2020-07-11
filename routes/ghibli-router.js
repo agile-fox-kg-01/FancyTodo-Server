@@ -5,8 +5,7 @@ const GhibliController = require('../controllers/ghibliControllers')
 
 const {authentification} = require('../middlewares/auth');
 
-router.use(authentification)
-router.get('/', GhibliController.listFilms);
+router.get('/', authentification, GhibliController.listFilms);
 
 
 module.exports = router;

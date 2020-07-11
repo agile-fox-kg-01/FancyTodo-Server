@@ -30,16 +30,7 @@ class TodosController {
 
                 // console.log(err)
 
-                if (err.name == 'SequelizeValidationError') {
-                    err = err.errors.map(error => error.message)
-                    next({
-                        name: `BadRequest`,
-                        errors: {message: err}
-                    })
-                } else {
-                    // console.log(err.message)
-                    next(err);
-                }
+                next(err);
             })
     }
 
@@ -111,19 +102,9 @@ class TodosController {
                 // return Todo.findByPk(req.params.id)
             })
             .catch(err => {
-                
-                // console.log(err);
 
-                if (err.name == 'SequelizeValidationError') {
-                    err = err.errors.map(error => error.message)
-                    next({
-                        name: `BadRequest`,
-                        errors: {message: err}
-                    })
-                } else {
-                    // console.log(err.message)
                     next(err);
-                }
+      
             })
     }
 

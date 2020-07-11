@@ -10,7 +10,7 @@ async function authentification (req, res, next) {
     if(!token) {
         next({
             name: `Unauthorized`,
-            errors: {message: `Need to login first`}
+            errors: `Need to login first`
         });
     }
     
@@ -30,7 +30,7 @@ async function authentification (req, res, next) {
         if (!user) { 
             next({
                 name: `Unauthorized`,
-                errors: {message: `Need to login first`}
+                errors: `Need to login first`
             });
         } else {
             req.userLogin = user;
@@ -57,12 +57,12 @@ async function authorization (req, res, next) {
         if(!todo) {
             next({
                 name: `NotFound`,
-                errors: {message: `Not found`}
+                errors: `Todo not found`
             });
         } else if(todo.UserId !== req.userLogin.id) {
             next({
                 name: `Unauthorized`,
-                errors: {message: `User not authorized`}
+                errors: `User not authorized to make a change`
             });
         } else {
             // console.log(todo.dataValues)

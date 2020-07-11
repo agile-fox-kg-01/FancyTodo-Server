@@ -20,12 +20,12 @@ class UsersController {
             if (!user) {
                 next({
                     name: `BadRequest`,
-                    errors: { message: `Invalid username/password` }
+                    errors: `Invalid username/password`
                 })
             } else if (!comparePassword(req.body.password, user.password)) {
                 next({
                     name: `BadRequest`,
-                    errors: { message: `Invalid username/password` }
+                    errors: `Invalid username/password`
                 })
             } else {
 
@@ -59,18 +59,8 @@ class UsersController {
             });
         } catch (err) {
 
-            // console.log(err) //tracker
+            next(err);
 
-            if (err.name == 'SequelizeValidationError') {
-                err = err.errors.map(error => error.message)
-                next({
-                    name: `BadRequest`,
-                    errors: { message: err }
-                })
-            } else {
-                // console.log(err.message)
-                next(err);
-            }
         }
     }
 
@@ -82,7 +72,7 @@ class UsersController {
 
         try {
             const googlePayload = await verify(google_token);
-            const googleEmail =  googlePayload.email;
+            const googleEmail = googlePayload.email;
 
             // console.log('ini gmail: ', googleEmail);
 
@@ -98,12 +88,16 @@ class UsersController {
 
             // console.log(user.email)
 
-            if(user) {
+            if (user) {
 
                 // console.log('ini password PG: ', user.password)
 
-                if(!comparePassword(process.env.google_default_password, user.password)) {
-                    throw `Please login via website`
+                if (!comparePassword(process.env.google_default_password, user.password)) {
+                    
+                    next({
+                        name: `BadRequest`,
+                        errors: `Please login via website`
+                    })
                 } else {
 
                     // console.log('ini email PG: ', user.email)
@@ -111,7 +105,7 @@ class UsersController {
                     const payload = {
                         email: user.email
                     }
-    
+
                     const token = signToken(payload);
 
                     // console.log('ini email PG: ', token)
@@ -131,14 +125,14 @@ class UsersController {
                 }
 
                 const token = signToken(payload);
-                
+
                 res.status(201).json({
                     token
                 })
             }
 
-        
-        } catch(err) {
+
+        } catch (err) {
 
             // console.log(err)
 
