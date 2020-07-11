@@ -525,7 +525,16 @@ Deploy Here:
         "error": "not found"
       }
       ```
+ **Quotes API**
+---
+  
+  * **URL**
+   
+    /quote
 
+  * **Method**
+
+    `GET`
 **User Google Login**
 ---
   
