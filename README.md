@@ -61,7 +61,7 @@ Deploy Here:
       **Content**
       ```json
       {
-        "status": 400
+        "status": 400,
         "error": "email must be unique"
       }
       ```
@@ -110,7 +110,7 @@ Deploy Here:
       **Content**
       ```json
       {
-        "status": 400
+        "status": 400,
         "error": "invalid username/password"
       }
       
@@ -169,7 +169,7 @@ Deploy Here:
     **Content**
     ```json
      {
-        "status": 400
+        "status": 400,
         "error":[ "Title field shouldn't be empty" ]
     }
     ```
@@ -178,7 +178,7 @@ Deploy Here:
 
     ```json
     {
-        "status": 400
+        "status": 400,
         "error":[ "Description field shouldn't be empty" ]
     }
     ```
@@ -187,7 +187,7 @@ Deploy Here:
 
     ```json
     {
-        "status": 400
+        "status": 400,
         "error":["Status field shouldn't be empty"]
     }
     ```
@@ -196,7 +196,7 @@ Deploy Here:
 
     ```json
     {
-        "status": 400
+        "status": 400,
         "error":["Due_date field shouldn't be empty"]
     }
     ```
@@ -207,7 +207,7 @@ Deploy Here:
     **Content**
     ```json
     {
-        "status": 500
+        "status": 500,
         "error":"internal server error"
     }
     ```
@@ -259,7 +259,7 @@ Deploy Here:
     **Content**
     ```json
      {
-        "status": 500
+        "status": 500,
         "error":"internal server error"
     }
     ```
@@ -314,7 +314,7 @@ Deploy Here:
     **Content**
     ```json
     {
-      "status": 404
+      "status": 404,
       "error": "not found"
     }
     ```
@@ -374,7 +374,7 @@ Deploy Here:
     **Content**
     ```json
      {
-        "status": 400
+        "status": 400,
         "error":[ "Title field shouldn't be empty" ]
     }
     ```
@@ -383,7 +383,7 @@ Deploy Here:
 
     ```json
     {
-        "status": 400
+        "status": 400,
         "error":[ "Description field shouldn't be empty" ]
     }
     ```
@@ -392,7 +392,7 @@ Deploy Here:
 
     ```json
     {
-        "status": 400
+        "status": 400,
         "error":["Status field shouldn't be empty"]
     }
     ```
@@ -401,7 +401,7 @@ Deploy Here:
 
     ```json
     {
-        "status": 400
+        "status": 400,
         "error":["Due_date field shouldn't be empty"]
     }
     ```
@@ -412,7 +412,7 @@ Deploy Here:
     **Content**
     ```json
     {
-        "status": 500
+        "status": 500,
         "error":"internal server error"
     }
     ```
@@ -467,7 +467,7 @@ Deploy Here:
     **Content**
     ```json
     {
-      "status": 404
+      "status": 404,
       "error": "not found"
     }
     ```
@@ -479,7 +479,7 @@ Deploy Here:
     **Content**
     ```json
     {
-      "status":500
+      "status":500,
       "error": "internal server error"
     }
     ```
@@ -521,7 +521,7 @@ Deploy Here:
       **Content**
       ```json
       {
-        "status": 404
+        "status": 404,
         "error": "not found"
       }
       ```
@@ -570,7 +570,7 @@ Deploy Here:
       **Content**
       ```json
       {
-        "status": 400
+        "status": 400,
         "error": "invalid username/password"
       }
       
@@ -581,7 +581,7 @@ Deploy Here:
 
        ```json
       {
-        "status": 500
+        "status": 500,
         "error":"internal server error"
       }
       ```

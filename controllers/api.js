@@ -35,6 +35,8 @@ class apiController {
     joke
       .get("https://api.kanye.rest")
       .then(result => {
+        result = result.data.quote
+        console.log(result);
         res.status(200).json({ result })
       })
       .catch(err => {
