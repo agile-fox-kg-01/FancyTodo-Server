@@ -1,39 +1,33 @@
 const { User, Todo } = require('../models/index')
-const { verifyToken } =require('../helpers/jwt')
+const { verifyToken } = require('../helpers/jwt')
 
 async function authentication(req,res,next){
     const token = req.headers.token
-
     if(!token){
-        res.status(401).json({
-            error: 'Silahkan Login terlebih dahulu'
-        })
-    } else {
-        // Cek Token with JWT
-        const payload = verifyToken(token)
-
+        throw { name: 'Not Authorized' }
+    } else {        
         try {
+            const payload = verifyToken(token)
             const user = await User.findOne({
                 where: {
                     email:payload.email
                 }
             })
-
             if(!user){
-                res.status(401).json({
-                    error: 'Silahkan Login terlebih dahulu'
-                })
+                throw { name: 'Email not valid' }
             } else {
                 req.userLogin = user
                 next()
             }
         } catch(err){
-            res.status(500).json({
-                error: 'Internal Server Error'
+            next({
+                name: err.name
             })
         } 
     }
 }
+
+
 
 async function isOwner(req,res,next){
     const todoId = req.params.id
@@ -41,21 +35,17 @@ async function isOwner(req,res,next){
     try{
         const todo = await Todo.findByPk(todoId)
         if(!todo){
-            res.status(404).json({
-                error: 'Todo Not Found'
-            })
+            throw { name: 'Todo not found' }
         } else {
             if(todo.UserId !== req.userLogin.id){
-                res.status(404).json({
-                    error: 'Not Authorized'
-                })
+                throw { name: 'Not Authorized'}
             } else {
                 next()
             }
         }
     } catch(err){
-        res.status(500).json({
-            error: 'Invalid Server Error'
+        next({
+            name: err.name
         })
     }
     
@@ -66,3 +56,61 @@ module.exports = {
     authentication,
     isOwner
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// async function authentication(req, res, next) {
+    //     let token = req.headers.token
+    //     if (token) {
+    
+    //         try {
+    //             let payload = verifyToken(token)
+    
+    //             let currentUser = await User.findOne({
+    //                 where: {
+    //                     email: payload.email
+    //                 }
+    //             })
+    
+    //             // if (currentUser) {
+    //             //     req.currentUser = currentUser
+    //             //     next();
+    //             // } else {
+    //             //     req.status(401).json({
+    //             //         error: 'Hi Ichlas'
+    //             //     })
+    //             //     // throw { name: "Unauthorized" }
+    //             // }
+    
+    //         } catch (err) {
+    //             console.log(err)
+    //             throw { name: "Internal server error" }
+    //         }
+    
+    //     } else {
+    //         throw { name: "Unauthorized" }
+    //     }
+    // }

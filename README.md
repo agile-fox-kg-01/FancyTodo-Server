@@ -6,7 +6,6 @@
 
 ## API Documentation
 
-----
   **Create Todo**
 ----
   Make new todo 
@@ -23,7 +22,7 @@
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | token | <jsonwebtoken> | true |
+  | token | jsonwebtoken | true |
   
 * **URL Params**
 
@@ -33,10 +32,13 @@
 
   | key | value | required |
   | :---: | :---: | :---: |
-  | title | <WRITE_TITLE_HERE> | true |
-  | description | <WRITE_DESCRIPTION_HERE> | true |
-  | status | <WRITE_STATUS_HERE> | true |
-  | due_date | <WRITE_DUEDATE_HERE> | true |
+  | title | STRING | true |
+  | description | STRING | true |
+  | status | STRING | true |
+  | due_date | DATE | true |
+  | place | STRING | false |
+  | UserId | INTEGER | true |
+
 
 * **Success Response:**
   
@@ -47,7 +49,7 @@
     {
     "id": 1,
     "title": "Tugas Pertama",
-    "description": "Mengerjakan Dokumnetasi API",
+    "description": "Mengerjakan Dokumentasi API",
     "status": "On Progres",
     "due_date": "2020-07-08T17:00:00.000Z",
     "UserId": 1,
@@ -59,25 +61,43 @@
     * **Code:** 400 BAD REQUEST <br />
         **Content:** 
         ```json
-        { "error" : "description cannot be empty" }
+        { "error" : ["Field Title Cannot Be Empty!"] }
         ```
 
         OR
 
         ```json
-        { "error" : "status cannot be empty" }
+        { "error" : ["Field Title Null!"] }
         ```
 
         OR
 
         ```json
-        { "error" : "due date cannot be empty" }
+        { "error" : ["Field Description Cannot Be Empty"] }
         ```
 
         OR
 
         ```json
-        { "error" : "invalid due date format" }
+        { "error" : ["Field Status Cannot Be Empty"] }
+        ```
+        OR
+
+        ```json
+        { "error" : ["Field Due Date Cannot Be Empty"] }
+        ```
+        OR
+
+        ```json
+        { "error" : ["Field Due Date Invalid Format"] }
+        ```
+
+    OR
+
+    * **Code:** 404 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        { "error" : "You have Unauthorized token!" }
         ```
 
     OR
@@ -88,7 +108,152 @@
         { "error" : "internal server error" }
         ```
 
-<!-- iklas -->
+
+----
+  **Get Todos**
+----
+  Get all todo 
+
+* **URL**
+
+  /todos/
+
+* **Method:**
+  
+  `GET`
+
+* **Request Headers**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | token | jsonwebtoken | true |
+  
+* **URL Params**
+
+   none
+
+* **Data Params**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | UserId | INTEGER | true |
+
+
+* **Success Response:**
+  
+  
+  * **Code:** 200 OK <br/>
+    **Content:** 
+    ```json
+    [
+      {
+          "id": 31,
+          "title": "Meeting with timothy",
+          "description": "Harus tepat waktu, jam 9.45 susah di tempat",
+          "status": "Penting",
+          "due_date": "2020-07-12T00:00:00.000Z",
+          "place": "Miss Bee Providore. Jl. Rancabentang No. 11A, Ciumbuleuit, Bandung",
+          "UserId": 7,
+          "createdAt": "2020-07-11T09:26:24.370Z",
+          "updatedAt": "2020-07-11T10:48:12.712Z"
+      },
+      {
+          "id": 32,
+          "title": "Meeting with Noval",
+          "description": "Dateng 15 menit lebih awal, supaya ga kena macet.",
+          "status": "Pending",
+          "due_date": "2020-07-27T00:00:00.000Z",
+          "place": "Miss Bee Providore. Jl. Rancabentang No. 11A, Ciumbuleuit, Bandung",
+          "UserId": 7,
+          "createdAt": "2020-07-11T10:02:42.297Z",
+          "updatedAt": "2020-07-11T10:49:03.266Z"
+      }
+    ]
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 404 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        { "error" : "You have Unauthorized token!" }
+        ```
+
+    OR
+
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+        **Content:** 
+        ```json
+        { "error" : "Internal Server Error" }
+        ```        
+
+----
+  **Get Todos By Id**
+----
+  Get todo 
+
+* **URL**
+
+  /todos/
+
+* **Method:**
+  
+  `GET`
+
+* **Request Headers**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | token | jsonwebtoken | true |
+  
+* **URL Params**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | id | INTEGER | true |
+
+* **Data Params**
+
+  | key | value | required |
+  | :---: | :---: | :---: |
+  | UserId | INTEGER | true |
+
+
+* **Success Response:**
+  
+  
+  * **Code:** 200 OK <br/>
+    **Content:** 
+    ```json
+    {
+        "id": 32,
+        "title": "Meeting with Noval",
+        "description": "Dateng 15 menit lebih awal, supaya ga kena macet.",
+        "status": "Pending",
+        "due_date": "2020-07-27T00:00:00.000Z",
+        "place": "Miss Bee Providore. Jl. Rancabentang No. 11A, Ciumbuleuit, Bandung",
+        "UserId": 7,
+        "createdAt": "2020-07-11T10:02:42.297Z",
+        "updatedAt": "2020-07-11T10:49:03.266Z"
+    }
+    ```
+ 
+* **Error Response:**
+    * **Code:** 404 UNAUTHORIZED <br />
+        **Content:** 
+        ```json
+        { "error" : "You have Unauthorized token!" }
+        ```
+
+    OR
+
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+        **Content:** 
+        ```json
+        { "error" : "Internal Server Error" }
+        ```        
+
+
 
 ----
   **User Register**

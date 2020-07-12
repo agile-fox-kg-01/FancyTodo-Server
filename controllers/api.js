@@ -15,26 +15,7 @@ class ApiController {
         .catch(err=>{
             res.status(500).json(err.message)
         })
-    }
-
-
-    // static getRestaurantBandung(req,res,next){
-    //     axios({
-    //         method: 'GET',
-    //         url: 'https://developers.zomato.com/api/v2.1/collections?city_id=11052&count=9',
-    //         headers:{
-    //             'user-key': process.env.ZOMATO_KEY
-    //         }
-    //     })
-    //     .then(result=>{
-    //         res.status(200).json(result.data)
-    //     })
-    //     .catch(err=>{
-    //         res.status(500).json(err.message)
-    //     })
-    // }
-
-    
+    }    
 
     static getLocationBandung(req,res,next){
         axios({
@@ -143,3 +124,20 @@ module.exports = ApiController
 //         'user-key': 'eb157cb32b1bc834b1d92e6a9b0e8f33'
 //     }
 // })
+
+
+    // static getRestaurantBandung(req,res,next){
+    //     axios({
+    //         method: 'GET',
+    //         url: 'https://developers.zomato.com/api/v2.1/collections?city_id=11052&count=9',
+    //         headers:{
+    //             'user-key': process.env.ZOMATO_KEY
+    //         }
+    //     })
+    //     .then(result=>{
+    //         res.status(200).json(result.data)
+    //     })
+    //     .catch(err=>{
+    //         res.status(500).json(err.message)
+    //     })
+    // }

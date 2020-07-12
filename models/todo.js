@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'Field Title wajib diisi'
+          msg: 'Field Title Cannot Be Empty!'
         },
         notNull:{
-          msg: 'Field Title wajib diisi not null'
+          msg: 'Field Title Null!'
         }
       }
     },
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'description cannot be empty'
+          msg: 'Field Description Cannot Be Empty'
         }
       }
     },
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'status cannot be empty'
+          msg: 'Field Status Cannot Be Empty'
         }
       }
     },
@@ -51,11 +51,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'due date cannot be empty'
+          msg: 'Field Due Date Cannot Be Empty'
         },
         isDate: {
           args: true,
-          msg: 'invalid due date format'
+          msg: 'Field Due Date Invalid Format'
         }
       }
     },
@@ -69,6 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     hooks : {
       beforeCreate : (todo) =>{
         todo.due_date = new Date(todo.due_date)
+        todo.place = todo.place ? todo.place : 'Not Set'
       }
     },
     sequelize,

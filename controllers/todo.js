@@ -2,7 +2,7 @@ const { Todo } = require('../models/index')
 
 class TodoController{
     // Membuat Todo
-    static async postTodo(req,res, next){
+    static async postTodo(req, res, next){
         let newTodo = {
             title: req.body.title,
             description: req.body.description,
@@ -13,9 +13,7 @@ class TodoController{
         }
         try {
             const todo = await Todo.create(newTodo)
-            console.log(todo)
             res.status(201).json(todo)
-
         } catch (err){
             next(err)
         }
@@ -24,7 +22,6 @@ class TodoController{
     // Memanggil Semua Data Todo
     static async getTodo(req,res,next){
         try {
-            
             const allTodo = await Todo.findAll({
                 where : {
                     UserId : req.userLogin.id
@@ -32,21 +29,22 @@ class TodoController{
             })
             res.status(200).json(allTodo)
         } catch(err){
-            res.status(500).json(err)
+            next()
         }
     }
 
     // Memanggil Detail Todo Berdasarkan ID
-    static async getTodoById(req,res){
+    static async getTodoById(req, res, next){
         const idInput = req.params.id
-        console.log('todo by id')
         try {
             const todo = await Todo.findByPk(idInput)
-            console.log(todo,'=======>')
-            res.status(200).json(todo)
+            if ( todo ){
+                res.status(200).json(todo)
+            }
         } catch(err) {
-            console.log(err)
-            res.status(404).json(err)
+            next({
+                name: err.name
+            })
         }
     }
 
@@ -72,10 +70,10 @@ class TodoController{
             } else {
                 res.status(200).json(todo[1][0])
             }
-            
-
         } catch(err) {
-            res.status(500).json(err.message)
+            next({
+                name: err.name
+            })
         }
     }
 
@@ -88,7 +86,9 @@ class TodoController{
             }})
             res.status(200).json(todo)
         } catch(err){
-            res.status(500).json(err)
+            next({
+                name: err.name
+            })
         }
     }
 }
