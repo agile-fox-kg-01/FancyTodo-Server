@@ -535,7 +535,7 @@ Deploy Here:
   * **Method**
 
     `GET`
-
+    
     
 **User Google Login**
 ---
