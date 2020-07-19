@@ -19,7 +19,7 @@ module.exports = function (err, req, res, next) {
       break;
     case 'SequelizeUniqueConstraintError':
       statusCode = 400
-      message = 'email must be unique'
+      message = 'email has been taken, please login or use another email'
       break;
     case 'Not Found':
       statusCode = 404
