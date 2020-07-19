@@ -78,10 +78,16 @@ class UserController {
       })
       if (user) {
         if (!comparePassword(process.env.GOOGLE_DEFAULT_BROWSER, user.password)) {
-          throw {
-            name: 'Not Found',
-            message: 'Email has been registered. Please login via website'
-          }
+          User.create({
+            first_name: googleUser.given_name,
+            last_name: googleUser.family_name,
+            email: email,
+            password: process.env.GOOGLE_DEFAULT_BROWSER
+          })
+          const token = jwtSign(email)
+          res.status(200).json({
+            token
+          })
         } else {
           const token = jwtSign(user.email)
           const dataTodos = await TodoList.findAll({
