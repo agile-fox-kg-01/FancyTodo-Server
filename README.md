@@ -2,7 +2,7 @@
 
 Deploy Here:
 
-[Fancy_TodoServer](https://fancy-todos-app.herokuapp.com/)
+https://fancy-todo-app-bc620.web.app/
 
 ## API Documentation
 
