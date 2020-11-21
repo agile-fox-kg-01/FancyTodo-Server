@@ -12,7 +12,10 @@ const errorHandler = (err, req, res, next) => {
             errors: err.errors
         })
     } else {
-        return res.status(500).json(err)
+        console.log(err)
+        return res.status(500).json({
+            errors: "internal server error"
+        })
     }
 }
 

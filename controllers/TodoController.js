@@ -1,11 +1,19 @@
-require('dotenv').config()
 const { Task } = require('../models/index')
 const axios = require('axios')
 
 class TodoController {
     static index(req, res, next) {
-        Task.findAll({where: {UserId: req.userLogin.id}}).then(data => {
-            res.status(200).json(data)
+        Task.findAll({ order: [['createdAt', 'DESC']], where: {UserId: req.userLogin.id}}).then(data => {
+            let todo = []
+            let duedate = []
+            data.forEach(data => {
+                if ( Date.parse(data.due_date) > Date.parse(new Date()) ) {
+                    todo.push(data)
+                } else {
+                    duedate.push(data)
+                }
+            });
+            res.status(200).json({ todo: todo, duedate: duedate })
         }).catch(err => {
             next(err)
         })
@@ -26,7 +34,13 @@ class TodoController {
                     name: 'ValidationError',
                     errors: err.errors[0].message
                 })
+            } else if (err.name === "SequelizeUniqueConstraintError") {
+                next({
+                    name: 'ValidationError',
+                    errors: err.errors[0].message
+                })
             } else {
+                console.log(err)
                 next(err)
             }
         })

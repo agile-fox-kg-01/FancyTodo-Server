@@ -17,5 +17,5 @@ app.use('/', routes)
 app.use(errorHandler)
 
 app.listen(PORT, () => {
-    console.log(`running at port:${PORT}`)
+    console.log(`app running at http://localhost:${PORT}/`)
 })

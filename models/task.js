@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     /**
@@ -17,9 +18,13 @@ module.exports = (sequelize, DataTypes) => {
   Task.init({
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'title cannot be empty'
+          msg: 'fill in the title field'
+        },
+        notNull: {
+          msg: 'fill in the title field'
         }
       }
     },
@@ -28,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       validate: {
         isDate: {
-          msg: 'due_date cannot be empty'
+          msg: 'due_date must be a date'
         }
       }
     },

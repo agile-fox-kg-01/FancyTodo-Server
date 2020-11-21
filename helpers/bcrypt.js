@@ -2,7 +2,9 @@ const bcrypt = require('bcryptjs')
 
 function hashPassword(password) {
     const salt = bcrypt.genSaltSync(5)
+    console.log(salt)
     const hash = bcrypt.hashSync(password, salt)
+    console.log(hash)
     return hash
 }
 

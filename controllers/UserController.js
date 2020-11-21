@@ -6,6 +6,15 @@ const { verify } = require('../helpers/googleOauth')
 const { sendEmail } = require('../helpers/mailgun')
 
 class UserController {
+    static async browse(req, res, next) {
+        try {
+            const users = await User.findAll()
+            res.status(200).json(users)
+        } catch (err) {
+            next(err)
+        }
+    }
+
     static login(req, res, next) {
         const inputPassword = req.body.password
         User.findOne({
@@ -19,7 +28,7 @@ class UserController {
                     name: 'ValidationError',
                     errors: 'invalid username/password'
                 })
-            }else if (!comparePassword(inputPassword, databasePassword)) {
+            } else if (!comparePassword(inputPassword, databasePassword)) {
                 next({
                     name: 'ValidationError',
                     errors: 'invalid username/password'
@@ -38,15 +47,9 @@ class UserController {
         })
     }
     static async register(req, res, next) {
-        const newUser = {
-            email: req.body.email,
-            password: req.body.password,
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            birthOfDate: req.body.birthOfDate
-        }
+        const { ...data } = req.body
         try {
-            const user = await User.create(newUser)
+            const user = await User.create(data)
             const payload = {
                 email: user.email
             }
@@ -57,6 +60,11 @@ class UserController {
             })
         } catch (err) {
             if (err.name === "SequelizeValidationError") {
+                next({
+                    name: 'ValidationError',
+                    errors: err.errors[0].message
+                })
+            } else if (err.name === "SequelizeUniqueConstraintError") {
                 next({
                     name: 'ValidationError',
                     errors: err.errors[0].message
@@ -79,11 +87,9 @@ class UserController {
             }
             if (!user) {
                 const newUser = {
+                    username: payload.email,
                     email: payload.email,
-                    password: process.env.DEFAULT_GOOGLEPASS,
-                    firstname: payload.given_name,
-                    lastname: payload.family_name,
-                    birthOfDate: new Date()
+                    password: process.env.DEFAULT_GOOGLEPASS
                 }
                 const createUser = await User.create(newUser)
                 sendEmail(createUser.email, `Thank you , for choosing us!`)
